@@ -72,7 +72,7 @@
   width: 5.22rem;
   font-size: 0.34rem;
   letter-spacing: 0.015rem;
-  color: #BCBDD1;
+  color: #000;
   padding-left: 0.28rem;
 }
 

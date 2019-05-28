@@ -23,6 +23,9 @@
 <script>
 import vuePickers from 'vue-pickers'
 import {provs_data, citys_data, dists_data} from 'vue-pickers/lib/areaData'
+// import {createToast} from "mint-ui"
+import { Toast } from 'mint-ui';
+
 export default {
   components: {
     vuePickers
@@ -64,8 +67,51 @@ export default {
     },
     //点击保存
     save() {
-        
+        if (!this.address.name) {
+          Toast({
+              message: '请输入收货人姓名',
+              duration: 3000
+          });
+          return;
+        }
+      let reg = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
+      if (!reg.test(this.address.tel)) {
+         Toast({
+            message: '请输入正确手机号',
+            duration: 3000
+          })
+        return;
+      }
+      if (!this.value || this.value == "请选择你所在的城市") {
+        Toast({
+            message: '请选择城市',
+            duration: 3000
+          })
+        return;
+      }
+      if (!this.address.detail) {
+        Toast({
+           message: '请输入详细地址',
+            duration: 3000 
+          })
+        return;
+      }
+      let old = window.localStorage.getItem("addressList",json);
+      let addressList = JSON.parse(old);
+      if(old && JSON.parse(old).length) {
+          addressList = JSON.parse(old);
+      } else {
+        addressList = [];
+      }
+      
+      addressList.push(this.address,this.value);
+      let json = JSON.stringify(addressList);
+      window.localStorage.setItem("addressList", json);
+      this.$router.push('/Address');
+
+      console.log("!!!"+addressList)
     }
+
   }
 }
 </script>

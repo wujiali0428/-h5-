@@ -30,7 +30,7 @@
            <!-- <div style="border-bottom: 0.005rem solid #f2f2f2;width:auto;margin:0 .2rem"></div> -->
       </div>
 
-      <div class="button">立即兑换</div>
+      <div class="buton">立即兑换</div>
     <!-- <h3>这是address页面</h3> -->
 </div>
 </template>
@@ -47,7 +47,9 @@ export default {
       }
     },
     mounted() {
+      
       let list = window.localStorage.getItem("addressList");
+      
       //如果有本地缓存
       if(list && JSON.parse(list).length) {
         this.addressList = JSON.parse(list);
@@ -62,6 +64,7 @@ export default {
         this.addressList.map(res => {
           if(res.pick) {
             this.address = res;
+            
           }
         })
       }
@@ -113,7 +116,7 @@ body {
   height: 0.24rem;
   margin-left: 0.16rem;
 }
-.button {
+.buton {
   width: 100%;
   height: 1.02rem;
   background: #F02D1B;
