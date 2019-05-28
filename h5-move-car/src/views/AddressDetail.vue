@@ -2,7 +2,7 @@
   <div class="address">
     <div class="input"><label>收货人</label><input type="text" placeholder="收货人姓名" v-model="address.name"/></div>
     <div class="input"><label>手机电话</label><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel"/></div>
-    <div class="input" @click="toShow"><label for="adress">所在城市</label><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="value"></div>
+    <div class="input" @click="toShow"><label for="adress">所在城市</label><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="address.value"></div>
     <div class="input"><label>详细地址</label><input type="text" placeholder="请输入详细地址" v-model="address.detail"/></div>
 
     <!-- <div class="result">
@@ -42,12 +42,13 @@ export default {
         data2: citys_data,
         data3: dists_data
       },
-      value:'',
+      
       address: {
           name: '',
           tel: '',
           city:'',
-          detail:''
+          detail:'',
+          value:'',
       }
     }
   },
@@ -59,7 +60,7 @@ export default {
       this.show = false
       console.log(val)
       this.res = val
-      this.value = this.res.select1.text + '-'+this.res.select2.text + '-' + this.res.select3.text
+      this.address.value = this.res.select1.text + '-'+this.res.select2.text + '-' + this.res.select3.text
       this.pickData.default = [val.select1, val.select2, val.select3]
     },
     toShow() {
@@ -82,7 +83,7 @@ export default {
           })
         return;
       }
-      if (!this.value || this.value == "请选择你所在的城市") {
+      if (!this.address.value || this.address.value == "请选择你所在的城市") {
         Toast({
             message: '请选择城市',
             duration: 3000
@@ -104,7 +105,7 @@ export default {
         addressList = [];
       }
       
-      addressList.push(this.address,this.value);
+      addressList.push(this.address);
       let json = JSON.stringify(addressList);
       window.localStorage.setItem("addressList", json);
       this.$router.push('/Address');

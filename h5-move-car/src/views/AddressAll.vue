@@ -2,7 +2,7 @@
   <div class="container">
       <!-- 有添加过地址的情况下 -->
       <div class='address-wrapper'>
-          <router-link to="/AddressAll" class='address-empty'  v-if="address&&address.name">
+          <router-link to="/AddressAll" class='address-empty'>
             <!-- <div class='address-full' @click='chooseAddress'> -->
                 <div class='address-detail'>
                     <img src='../assets/location.png' class='location' />
@@ -16,37 +16,14 @@
                         </div>      
                     </div>        
                 </div>
-                <img src='../assets/right-arrow.png' class='right-arrow' /> 
+                <!-- <img src='../assets/right-arrow.png' class='right-arrow' />  -->
+                <div class="ediuts">| 编辑</div>
                 
           </router-link>
-            <!-- </div> -->
-                  <!-- 没有添加过地址的情况下 -->
-          <router-link to="/AddressDetail"  class='address-empty' v-else>
-            <div class='address-empty-left'>
-                <img src='../assets/location.png' class='location' />
-                <span>暂无收货地址点击添加</span>
-            </div>
-            <img src='../assets/right-arrow.png' class='right-arrow' />
-          </router-link>
-           <!-- <div style="border-bottom: 0.005rem solid #f2f2f2;width:auto;margin:0 .2rem"></div> -->
-      </div>
-      
-      
-     
-
-      <!-- <div class="buton" v-if="!xj || xz">立即兑换</div> -->
-      <div>
-          <div v-if="xj||xz" class="hint">
-            <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
-            <div class="buttn">
-                <div>运费:  <span>￥15.00</span></div>
-                <div>立即支付</div>
-            </div>
-          </div>
           
-          <div class="buton" v-else>立即兑换</div>
-      </div>
-    <!-- <h3>这是address页面</h3> -->
+    </div>
+    <div class="addAdress">添加新地址</div>
+     
 </div>
 </template>
 <script>
@@ -83,16 +60,6 @@ export default {
         this.addressList.map(res => {
             this.address = res;
             console.log(";;;;"+res);
-            if(res.value.indexOf("新疆维吾尔")){
-              this.xj = res.value;
-            }else {
-              this.xj = "";
-            }
-            if(res.value.indexOf("西藏自治区")){
-              this.xz = res.value;
-            }else {
-              this.xz = "";
-            }
         })
 
       },
@@ -116,23 +83,12 @@ body {
   line-height: 1.3rem;
   margin-top: 0.3rem;
 }
-.right-arrow {
-  width: 0.065rem;
-  height: 0.115rem;
-  margin-left: 0.16rem;
-}
 .address-empty {
   padding: 0.16rem 0.16rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   text-decoration: none;
-}
-.address-empty-left {
-  display: flex;
-  align-items: center;
-  font-size: 0.3rem;
-  color: #000;
 }
 .location {
   width: 0.6rem;
@@ -145,17 +101,7 @@ body {
   height: 0.24rem;
   margin-left: 0.16rem;
 }
-.buton {
-  width: 100%;
-  height: 1.02rem;
-  background: #F02D1B;
-  font-size: 0.36rem;
-  color: #fff;
-  line-height: 1.02rem;
-  position: absolute;
-  bottom: 0;
-}
-/* 有默认地址情况下 */
+
 .address-text {
   font-size: 0.26rem;
   color: #323336;
@@ -165,7 +111,6 @@ body {
 .address-detail {
   display: flex;
   justify-content: space-between;
-  /* line-height: 0.26rem; */
    align-items: center;
    vertical-align: middle;
     background: #ff0;
@@ -185,7 +130,6 @@ body {
 .hint {
   margin-top: 0.4rem;
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
   margin-left: 0.3rem;
 }
@@ -201,27 +145,18 @@ body {
   font-size: 0.26rem;
   margin-left: 0.3rem;
 }
-.buttn {
-  width: 100%;
-  height: 1.02rem;
-
-  font-size: 0.36rem;
-  color: #fff;
-  line-height: 1.02rem;
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  bottom: 0;
+.addAdress {
+    width: 90%;
+    height: 1.02rem;
+    background:  #F02D1B;
+    margin: 0 auto;
+    font-size: 0.36rem;
+    color: #fff;
+    line-height:1.02rem;
+    margin-top: 0.8rem;
 }
-.buttn>div:first-child{
-  width: 60%;
-  color: #000;
-  font-size: 0.32rem
-}
-.buttn>div:last-child{
-  width: 40%;
-  color: #fff;
-  font-size: 0.32rem;
-  background:  #F02D1B;
+.ediuts {
+    font-size: 0.32rem;
+    color: #ccc;
 }
 </style>
