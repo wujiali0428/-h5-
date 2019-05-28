@@ -69,7 +69,7 @@ export default {
   }
 
 </script>
-<style>
+<style scoped>
 /* 添加地址 */
 body {
   background: #F8F9FA;
