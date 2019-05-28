@@ -1,49 +1,22 @@
 <template>
-  <div>
+  <div id="body">
     <div id="nav">
-        <!-- <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> -->
         <img src="./../assets/banner.png">
-
-      </div>
-      <div class="content">
-          <div>11111</div>
-          <h4>4444</h4>
-      </div>
-    <!-- 有添加过地址的情况下 -->
-      <div class='address-wrapper'>
-          <router-link to="/Address"  class='address-empty'  v-if="address&&address.name">
-            <!-- <div class='address-full' @click='chooseAddress'> -->
-                <div class='address-detail'>
-                    <img src='../assets/location.png' class='location' />
-                    <div class='address-content'>
-                        <div class='address-top'>
-                            <span style='margin-right:.1rem;font-size:.18rem;font-weight: bold;'>{{address.name}}</span>
-                            <span style="font-size:.18rem;font-weight: bold;">{{address.tel.substring(0,3)}} {{address.tel.substring(3,7)}} {{address.tel.substring(7,11)}}</span>
-                        </div>
-                        <div class='address-bottom'>
-                            <div class='address-text'>111{{address.city  + ' '+address.street + ' '+ address.addDetail}}</div>
-                        </div>      
-                    </div>        
-                </div>
-                <img src='../assets/right-arrow.png' class='right-arrow' /> 
-          </router-link>
-            <!-- </div> -->
-
-      <!-- 没有添加过地址的情况下 -->
-        
-          <router-link to="/AddressDetail"  class='address-empty' v-else>
-            <div class='address-empty-left'>
-                <img src='../assets/location.png' class='location' />
-                <span>暂无收货地址点击添加</span>
-            </div>
-            <img src='../assets/right-arrow.png' class='right-arrow' />
-          </router-link>
-           <div style="border-bottom: 0.005rem solid #f2f2f2;width:auto;margin:0 .2rem"></div>
-      </div>
-
-      
-
+         <div class="content">
+        <div><input type="text" placeholder="请输入兑换码" value="" v-model="text"/></div>
+        <button @click="conversion">立即兑换</button>
+    </div>
+    </div>
+    <div class="explain">
+        <h3>兑换说明</h3>
+        <div>
+          <span>1、兑换码格式为12位数字和字母的组合</span>
+          <span>2、务必确认邮寄地址是否正确，避免出现邮寄不到的情况，挪车贴包邮范围：除西藏、新疆地区外（西藏、新疆地区邮费自理）；</span>
+          <span>3、收到挪车贴后，请支付宝或微信扫码绑定手机激活，有效期从激活日开始计算；</span>
+          <span>4、挪车二维码同时只能绑定一辆车，如需更换车辆，可以扫描正面二维码进行换绑操作，换绑无次数限制；</span>
+          <span>5、如有任何问题，请联系客服400-000-1199。</span>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -52,97 +25,101 @@
     name: 'app',
     data() {
       return {
-        address: '',
-        addressList: []
+        text: ''
       }
     },
     mounted() {
-      let list = window.localStorage.getItem("addressList");
-      //如果有本地缓存
-      if(list && JSON.parse(list).length) {
-        this.addressList = JSON.parse(list);
-      }else{
-        //没有本地缓存的时候存储为address：[]
-        window.localStorage.setItem("addressList","[]")
-      }
-      this.getAddress();
+     
     },
     methods:{
-      getAddress: function() {
-        this.addressList.map(res => {
-          if(res.pick) {
-            this.address = res;
+      conversion() {
+          let reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/;
+          if(!reg.test(this.text)){
+              alert("请输入正确的兑换码!")
+              return;
           }
-        })
+          this.$router.push('/Address');
       }
-      // gotoBuycode() {
-      //   console.log("ddd");
-      //   this.$router.push({
-      //     path: "/Address",
-          
-      //   })
-        
-      // }
     }
   }
 </script>
 <style scoped>
+#body{
+  background: #4512C2;
+}
+
 #nav {
   width: 100%;
-  
+  position: relative;
 }
+
 
 #nav img{
   width: 100%;
   vertical-align: middle;
 }
 
-/* #nav a.router-link-exact-active {
-  color: #42b983;
-} */
 .content{
-  width: 90%;
-  height: 10rem;
-  background: #f0f;
+  width: 100%;
   margin: 0 auto;
   font-size: 0.3rem;
-  position: relative;
-  top: -2rem;
-}
-.aaa {
-  font-size: 0.5rem;
-  width: 50%;
-  margin: 0 auto;
-  background: #ff0;
+  position: absolute;
+  top: 7.64rem;
 }
 
-/* 添加地址 */
-.right-arrow {
-  width: 0.065rem;
-  height: 0.115rem;
-  margin-left: 0.16rem;
+.content input {
+  height: 1rem;
+  width: 5.22rem;
+  font-size: 0.34rem;
+  letter-spacing: 0.015rem;
+  color: #BCBDD1;
+  padding-left: 0.28rem;
 }
-.address-empty {
-  padding: 0.16rem 0.16rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+.content button {
+  height: 1rem;
+  width: 5.5rem;
+  background: #F02D1B;
+  border: none;
+  color: #fff;
+  line-height: 1rem;
+  text-align: center;
+  margin-top: 0.4rem;
+  font-size: 0.36rem;
 }
-.address-empty-left {
-  display: flex;
-  align-items: center;
-  font-size: 0.14rem;
+
+/* 兑换说明 */
+.explain {
+  width: 90%;
+  height: 5.14rem;
+  background: #3204A2;
+  border-radius: 12px;
+  margin: 0 auto;
+  position: relative;
+  top: -1rem;
 }
-.location {
-  width: 0.145rem;
-  height: 0.19rem;
-  margin-right: 0.16rem;
+
+.explain h3 {
+  font-size: 0.3rem;
+  color: #B89EF9;
+  padding-top: 0.3rem;
 }
-.right-arrow {
-  width: 0.065rem;
-  height: 0.115rem;
-  margin-left: 0.16rem;
+
+.explain>div {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
 }
+
+.explain span {
+  font-size: 0.26rem;
+  color: #B89EF9;
+  line-height: 0.26rem;
+  display: block;
+  line-height: 0.37rem
+}
+
+
 
 </style>
 
