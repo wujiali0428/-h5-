@@ -1,27 +1,14 @@
 <template>
   <div id="app">
+    <div class="nav">
+      <div class="return"></div>
+      <h4>马上挪车</h4>
+    </div>
     <router-view/>
   </div>
 </template>
 <script>
-  // import Address from './views/Address.vue'
-  // export default {
-  //   name: 'app',
-  //   components: {
-  //     Address
-  //   },
-  //   methods:{
 
-  //     // gotoBuycode() {
-  //     //   console.log("ddd");
-  //     //   this.$router.push({
-  //     //     path: "/Address",
-          
-  //     //   })
-        
-  //     // }
-  //   }
-  // }
 </script>
 
 <style scoped>
@@ -34,5 +21,23 @@
   overflow: hidden;
   height: 100vh;
   background-color: #F8F8F8;
+}
+.nav{
+  height: 0.88rem;
+  background-color: #fff;
+  overflow: hidden;
+  line-height: 0.88rem;
+}
+.return{
+  width: 0.88rem;
+  height: 0.88rem;
+  background:url('./assets/return.png') no-repeat center center;
+  float: left;
+  cursor: pointer;
+  background-size: 0.24rem 0.45rem;
+}
+.nav>h4{
+  padding-right: 0.88rem;
+  font-size: 0.3rem;
 }
 </style>
