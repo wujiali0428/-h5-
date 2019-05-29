@@ -55,8 +55,9 @@ export default {
       }
     },
     mounted() {
-      if(this.$route.query.address){
-        this.getAddress(this.$route.query.address);
+      if(window.localStorage.getItem("queryAddress")){
+        let data = JSON.parse(window.localStorage.getItem("queryAddress"))
+        this.getAddress(data.address);
       }else{
         let list = window.localStorage.getItem("addressList");
         console.log(list);

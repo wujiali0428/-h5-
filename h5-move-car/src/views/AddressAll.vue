@@ -4,7 +4,8 @@
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
             <!-- <div class='address-full' @click='chooseAddress'> -->
-                <router-link :to="{path:'/Address',query:{address,'index':index}}" class='address-detail'>
+                <!-- <router-link :to="{path:'/Address',query:{address,'index':index}}" class='address-detail'> -->
+                <div class='address-detail' @click='queryAddress({address,index})'>
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -15,15 +16,14 @@
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
                         </div>
                     </div>
-                </router-link>
-                <router-link :to="{path:'/AddressDetail',query:{address,'index':index}}">
-                  <div class="ediuts">| 编辑</div>
-                </router-link>
+                <!-- </router-link> -->
+                </div>
+                <div class="ediuts" @click=queryEdiuts({address,index})>编辑</div>
           </div>
     </div>
-    <router-link to="/AddressDetail">
-      <div class="addAdress">添加新地址</div>
-    </router-link>
+    <!-- <router-link to="/AddressDetail"> -->
+      <div class="addAdress" @click="newAddress">添加新地址</div>
+    <!-- </router-link> -->
 </div>
 </template>
 <script>
@@ -49,19 +49,19 @@ export default {
       console.log(this.$router)
     },
     methods:{
-
-      // getAddress: function() {
-      //   // debugger;
-      //   this.addressList.map(res => {
-      //       this.address = res;
-      //       console.log(";;;;"+res);
-      //   })
-
-      // },
-      editor() {
-        
+      queryEdiuts(data) {
+        window.localStorage.setItem("queryEdiuts",JSON.stringify(data));
+        window.localStorage.setItem("newAddress","0");
+        this.$router.push('/AddressDetail');
       },
-      
+      queryAddress(data){
+        window.localStorage.setItem("queryAddress",JSON.stringify(data));
+        this.$router.push('/Address');
+      },
+      newAddress(){
+        window.localStorage.setItem("newAddress","1");
+        this.$router.push('/AddressDetail')
+      }
     }
   }
 

@@ -52,9 +52,10 @@ export default {
     }
   },
   created(){
-    if(this.$route.query.address){
-      this.address = this.$route.query.address
-      this.index = this.$route.query.index
+    if(window.localStorage.getItem("newAddress")==0){
+      let data = JSON.parse(window.localStorage.getItem("queryEdiuts"))
+      this.address = data.address
+      this.index = data.index
     }
   },
   methods: {
