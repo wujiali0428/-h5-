@@ -2,7 +2,7 @@
   <div class="container">
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
-                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="deleteAddress({address,index})">
+                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="touchStart({address,index})" @touchend="touchEnd">
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -24,6 +24,7 @@
 </template>
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+import { clearInterval } from 'timers';
 // import { addListener } from 'cluster';
 export default {
     name: 'Address',
@@ -36,8 +37,7 @@ export default {
         xj:null,
         xz:null,
         timer: 0,
-        startTimer: "",
-        endTimer: ""
+        startTimer: 0,
       }
     },
     mounted() {
@@ -56,6 +56,7 @@ export default {
         this.$router.push('/AddressDetail');
       },
       queryAddress(data){
+        console.log(data);
         window.localStorage.setItem("queryAddress",JSON.stringify(data));
         this.$router.push('/Address');
       },
@@ -65,34 +66,38 @@ export default {
       },
       //长按删除
       deleteAddress(data) {
+        MessageBox.confirm('确定要删除吗?').then(action => {
+          let arr = this.addressList.filter((item,i) => {
+            return i != data.index;
+          })
+          this.addressList = arr;
+          let json = JSON.stringify(arr);
+          window.localStorage.setItem("addressList", json);
+          Toast({
+            message: "删除成功！",
+            duration: 3000
+          })
+          if(this.addressList.length>0){
+            let data = { address:this.addressList[0]}
+            window.localStorage.setItem("queryAddress",JSON.stringify(data))
+          }else{
+            window.localStorage.setItem("queryAddress","")
+          }
+          this.$router.push('/AddressAll');
+        }).catch(()=>{ });
         // debugger;
-        console.log("!!!!haha"+this.addressList);
-        
-        this.startTime = +new Date()
-        this.timer = setTimeout(function () {
-            MessageBox.confirm('确定要删除吗?').then(action => {
-              let message = window.localStorage.getItem("addressList");
-              console.log("bbb"+message);
-              let addAdressList = JSON.parse(message);
-              console.log("cccc"+addAdressList);
-              let arr = addAdressList.filter((item,i) => {
-                return i != data.index;
-              })
-                let json = JSON.stringify(arr);
-                console.log(arr);
-                window.localStorage.setItem("addressList", json);
-                Toast({
-                  message: "删除成功！",
-                  duration: 3000
-                })
-            });
-            // debugger;
-           
-        }, 700)
-        //没有作用，想要刷新页面的数据
-        this.$router.push('/AddressAll');
-
-        // window.localStorage.removeItem(data.index);
+      },
+      touchStart(data){
+        window.clearTime = window.setInterval(function(){
+          this.startTimer += 1;
+          if(this.startTimer>=3){
+            this.deleteAddress(data)
+            window.clearInterval(clearTime);
+          }
+        }.bind(this),1000)
+      },
+      touchEnd(){
+        window.clearInterval(clearTime);
       }
     }
   }
@@ -107,6 +112,7 @@ export default {
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
+  user-select: none;
 }
 .address-empty {
   padding: 0.16rem 0.16rem;
