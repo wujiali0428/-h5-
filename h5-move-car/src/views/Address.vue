@@ -83,12 +83,12 @@ export default {
         this.addressList.map(res => {
             this.address = res;
             console.log(";;;;"+res);
-            if(res.value.indexOf("新疆维吾尔")){
+            if(res.value.indexOf("新疆维吾尔") != -1){
               this.xj = res.value;
             }else {
               this.xj = "";
             }
-            if(res.value.indexOf("西藏自治区")){
+            if(res.value.indexOf("西藏自治区")!= -1){
               this.xz = res.value;
             }else {
               this.xz = "";
