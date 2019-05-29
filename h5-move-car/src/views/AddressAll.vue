@@ -14,7 +14,7 @@
                         <div class='address-bottom'>
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
                         </div>      
-                    </div>        
+                    </div>
                 </div>
                 <!-- <img src='../assets/right-arrow.png' class='right-arrow' />  -->
                 <div class="ediuts">| 编辑</div>
