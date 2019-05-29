@@ -29,6 +29,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+<<<<<<< HEAD
+=======
+  /* overflow: hidden; */
+>>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
   height: 100vh;
   background-color: #F8F8F8;
 }
@@ -48,6 +52,7 @@
 }
 .nav>h4{
   padding-right: 0.88rem;
-  font-size: 0.3rem;
+  font-size: 0.36rem;
+  font-weight: bold;
 }
 </style>

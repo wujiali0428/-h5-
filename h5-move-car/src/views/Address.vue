@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-      <!-- 有添加过地址的情况下 -->
+      
       <div class='address-wrapper'>
+        <!-- 有添加过地址的情况下 -->
           <router-link to="/AddressAll" class='address-empty'  v-if="address&&address.name">
-            <!-- <div class='address-full' @click='chooseAddress'> -->
                 <div class='address-detail'>
                     <img src='../assets/location.png' class='location' />
                     <div class='address-content'>
@@ -18,8 +18,7 @@
                 </div>
                 <img src='../assets/right-arrow.png' class='right-arrow' />
           </router-link>
-            <!-- </div> -->
-                  <!-- 没有添加过地址的情况下 -->
+           <!-- 没有添加过地址的情况下 -->
           <router-link to="/AddressDetail"  class='address-empty' v-else>
             <div class='address-empty-left'>
                 <img src='../assets/location.png' class='location' />
@@ -27,20 +26,18 @@
             </div>
             <img src='../assets/right-arrow.png' class='right-arrow' />
           </router-link>
-          <!-- <div style="border-bottom: 0.005rem solid #f2f2f2;width:auto;margin:0 .2rem"></div> -->
       </div>
-      <!-- <div class="buton" v-if="!xj || xz">立即兑换</div> -->
+      <!-- 新疆西藏地区邮费问题 -->
       <div>
           <div v-if="xj||xz" class="hint">
             <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
             <div class="buttn">
                 <div style="background-color:#fff">运费:  <span>￥15.00</span></div>
-                <div>立即支付</div>
+                <div @click="payment">立即支付</div>
             </div>
           </div>
-          <div class="buton" v-else>立即兑换</div>
+          <div class="buton" v-else @click="conversion">立即兑换</div>
       </div>
-    <!-- <h3>这是address页面</h3> -->
 </div>
 </template>
 <script>
@@ -51,10 +48,10 @@ export default {
     },
     data() {
       return {
-        address: '',
+        address: '',  //所有用户地址信息
         addressList: [],
-        xj:null,
-        xz:null
+        xj:null,    //判断是否是新疆地区
+        xz:null     //判断是否是西藏地区
       }
     },
     mounted() {
@@ -73,6 +70,7 @@ export default {
       }
     },
     methods:{
+<<<<<<< HEAD
       getAddress: function(res) {
         this.address = res;
         if(res.value.indexOf("新疆维吾尔") != -1){
@@ -84,9 +82,36 @@ export default {
           this.xz = res.value;
         }else {
           this.xz = "";
+=======
+      getAddress: function() {
+        // debugger;
+        this.addressList.map(res => {
+            this.address = res;
+
+            console.log(";;;;"+res);
+
+            if(res.value.indexOf("新疆维吾尔") != -1){
+              this.xj = res.value;
+            }else {
+              this.xj = "";
+            }
+            if(res.value.indexOf("西藏自治区") != -1){
+              this.xz = res.value;
+            }else {
+              this.xz = "";
+>>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
             }
 
       },
+      //点击立即支付
+      payment() {
+        console.log("立即支付")
+      },
+      //点击立即兑换
+      conversion() {
+        console.log("立即兑换")
+      }
+
     }
   }
 
@@ -100,11 +125,14 @@ body {
   width: 6.9rem;
   background: #fff;
   border-radius: 0.08rem;
-  /* border: 1px solid #000; */
   box-shadow: 0 0.04rem 0.08rem #EFEFEF;
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
+<<<<<<< HEAD
+=======
+  overflow: hidden;
+>>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
   text-align: left;
 }
 .right-arrow {
@@ -126,7 +154,6 @@ body {
   color: #000;
 }
 .location {
-  width: 0.6rem;
   height: 0.6rem;
   margin-right: 0.22rem;
   margin-left:0.22rem;
@@ -151,19 +178,15 @@ body {
   font-size: 0.26rem;
   color: #323336;
   vertical-align: center;
-  /* background: #fef; */
 }
 .address-detail {
   display: flex;
   justify-content: space-between;
-  /* line-height: 0.26rem; */
    align-items: center;
    vertical-align: middle;
-    /* background: #ff0; */
 }
 .address-content {
   flex: 1;
-  /* background: #f0f; */
 }
 .address-top {
   height: 0.38rem;
@@ -177,21 +200,21 @@ body {
 .address-bottom {
   line-height: 0.4rem;
   font-size: 0.26rem;
+  padding-bottom: 0.2rem;
 }
 .hint {
   margin-top: 0.4rem;
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
-  margin-left: 0.3rem;
+  margin-left: 0.35rem;
 }
 .hint>div:first-child {
-  width: 0.95rem;
   height: 0.32rem;
-  background: #F02D1B;
-  padding: 0.1rem;
-  font-size: 0.16rem;
+  background: linear-gradient(148deg, #FF9067, #F56B38);
+  padding: 0.05rem;
+  font-size: 0.2rem;
   color: #fff;
+  border-radius: 0.08rem;
 }
 .hint span {
   font-size: 0.26rem;

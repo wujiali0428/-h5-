@@ -2,9 +2,14 @@
   <div class="container">
       <!-- 有添加过地址的情况下 -->
       <div class='address-wrapper'>
+<<<<<<< HEAD
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
             <!-- <div class='address-full' @click='chooseAddress'> -->
                 <router-link :to="{path:'/Address',query:{address,'index':index}}" class='address-detail'>
+=======
+          <router-link to="/AddressAll" class='address-empty' v-for="address in addressList" :key="address.name">
+                <div class='address-detail'>
+>>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -15,11 +20,17 @@
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </router-link>
                 <router-link :to="{path:'/AddressDetail',query:{address,'index':index}}">
                   <div class="ediuts">| 编辑</div>
                 </router-link>
           </div>
+=======
+                </div>
+                <div class="ediuts" @click="editor"> 编辑</div>
+          </router-link>
+>>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
     </div>
     <router-link to="/AddressDetail">
       <div class="addAdress">添加新地址</div>
@@ -49,6 +60,19 @@ export default {
       console.log(this.$router)
     },
     methods:{
+
+      // getAddress: function() {
+      //   // debugger;
+      //   this.addressList.map(res => {
+      //       this.address = res;
+      //       console.log(";;;;"+res);
+      //   })
+
+      // },
+      editor() {
+        
+      },
+      
     }
   }
 
@@ -58,7 +82,6 @@ export default {
 .address-wrapper {
   width: 6.9rem;
   border-radius: 0.08rem;
-  /* border: 1px solid #000; */
   box-shadow: 0 0.04rem 0.08rem #EFEFEF;
   margin: 0 auto;
   line-height: 1.3rem;
@@ -148,8 +171,10 @@ export default {
     margin-top: 0.8rem;
 }
 .ediuts {
-    width: 1rem;
-    font-size: 0.32rem;
-    color: #ccc;
+    font-size: 0.26rem;
+    color: #9D9EA4;
+    line-height: 0.46rem;
+    border-left: 1px solid #9D9EA4; 
+    padding-left: 0.2rem;
 }
 </style>
