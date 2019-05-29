@@ -147,6 +147,8 @@ input {
   outline: none;
   background: transparent;
   border: none;
+  font-size: 0.3rem;
+  color: rgb(84, 84, 84);
 }
 
 ::placeholder {

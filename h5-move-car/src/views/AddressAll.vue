@@ -1,10 +1,7 @@
 <template>
   <div class="container">
-      <!-- 有添加过地址的情况下 -->
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
-            <!-- <div class='address-full' @click='chooseAddress'> -->
-                <!-- <router-link :to="{path:'/Address',query:{address,'index':index}}" class='address-detail'> -->
                 <div class='address-detail' @click='queryAddress({address,index})'>
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
@@ -16,7 +13,6 @@
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
                         </div>
                     </div>
-                <!-- </router-link> -->
                 </div>
                 <div class="ediuts" @click=queryEdiuts({address,index})>编辑</div>
           </div>

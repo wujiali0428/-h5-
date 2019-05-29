@@ -32,7 +32,7 @@
           <div v-if="xj||xz" class="hint">
             <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
             <div class="buttn">
-                <div style="background-color:#fff">运费:  <span>￥15.00</span></div>
+                <div style="background-color:#fff">运费:  <span style="color:#F02C1C;font-size:0.3rem">￥15.00</span></div>
                 <div @click="payment">立即支付</div>
             </div>
           </div>
@@ -197,11 +197,12 @@ body {
 .hint span {
   font-size: 0.26rem;
   margin-left: 0.3rem;
+  color: #9C9EA8;
 }
 .buttn {
   width: 100%;
-  height: 1.02rem;
-
+  height: 1.01rem;
+  border-top: 0.01rem solid #EAEAEA;
   font-size: 0.36rem;
   color: #fff;
   line-height: 1.02rem;
@@ -212,12 +213,12 @@ body {
   left: 0;
 }
 .buttn>div:first-child{
-  width: 60%;
+  width: 50%;
   color: #000;
   font-size: 0.32rem
 }
 .buttn>div:last-child{
-  width: 40%;
+  width: 50%;
   color: #fff;
   font-size: 0.32rem;
   background:  #F02D1B;

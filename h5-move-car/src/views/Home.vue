@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import { Toast } from 'mint-ui';
   export default {
     name: 'app',
     data() {
@@ -33,11 +34,16 @@
     },
     methods:{
       conversion() {
-          // let reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/;
-          // if(!reg.test(this.text)){
-          //     alert("请输入正确的兑换码!")
-          //     return;
-          // }
+          let reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/;
+          if(!reg.test(this.text)){
+              // alert("请输入正确的兑换码!")
+              // return;
+              Toast({
+                message: '请输入正确的兑换码!',
+                duration: 3000
+              })
+              return;
+          }
           this.$router.push('/Address');
       }
     }
