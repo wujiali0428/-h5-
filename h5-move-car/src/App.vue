@@ -18,7 +18,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* overflow: hidden; */
   height: 100vh;
   background-color: #F8F8F8;
 }

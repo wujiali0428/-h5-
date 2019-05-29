@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-      <!-- 有添加过地址的情况下 -->
       <div class='address-wrapper'>
           <router-link to="/AddressAll" class='address-empty' v-for="address in addressList" :key="address.name">
                 <div class='address-detail'>
@@ -15,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ediuts" @click="editor"> 编辑</div>
+                <div class="ediuts" @click="editor">编辑</div>
           </router-link>
     </div>
     <router-link to="/AddressDetail">
