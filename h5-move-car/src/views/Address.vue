@@ -160,6 +160,7 @@ body {
     /* background: #ff0; */
 }
 .address-content {
+  flex: 1;
   /* background: #f0f; */
 }
 .address-top {

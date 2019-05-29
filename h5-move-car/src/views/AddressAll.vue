@@ -2,28 +2,26 @@
   <div class="container">
       <!-- 有添加过地址的情况下 -->
       <div class='address-wrapper'>
-          <router-link to="/AddressAll" class='address-empty'>
+          <router-link to="/AddressAll" class='address-empty' v-for="address in addressList" :key="address.name">
             <!-- <div class='address-full' @click='chooseAddress'> -->
                 <div class='address-detail'>
-                    <img src='../assets/location.png' class='location' />
+                    <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
-                            <span style='margin-right:.1rem;font-size:0.3rem;font-weight: bold;color:#323336'>{{address.name}}</span>
-                            <span style="font-size:0.26rem;font-weight: bold;color:#9D9EA4">{{address.tel}}</span>
+                            <span style="font-weight: bolder;margin-right:0.2rem;color: #323336;">{{address.name}}</span>
+                            <span style="font-size:0.26rem">{{address.tel}}</span>
                         </div>
                         <div class='address-bottom'>
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
-                        </div>      
+                        </div>
                     </div>
                 </div>
-                <!-- <img src='../assets/right-arrow.png' class='right-arrow' />  -->
                 <div class="ediuts">| 编辑</div>
-                
           </router-link>
-          
     </div>
-    <div class="addAdress">添加新地址</div>
-     
+    <router-link to="/AddressDetail">
+      <div class="addAdress">添加新地址</div>
+    </router-link>
 </div>
 </template>
 <script>
@@ -34,48 +32,28 @@ export default {
     },
     data() {
       return {
-        address: '',
         addressList: [],
         xj:null,
         xz:null
       }
     },
     mounted() {
-      
       let list = window.localStorage.getItem("addressList");
       console.log(list);
       //如果有本地缓存
       if(list && JSON.parse(list).length) {
         this.addressList = JSON.parse(list);
-      }else{
-        //没有本地缓存的时候存储为address：[]
-        window.localStorage.setItem("addressList","[]")
       }
-      this.getAddress();
-    
     },
     methods:{
-      getAddress: function() {
-        // debugger;
-        this.addressList.map(res => {
-            this.address = res;
-            console.log(";;;;"+res);
-        })
-
-      },
     }
   }
 
 </script>
 <style scoped>
 /* 添加地址 */
-body {
-  background: #F8F9FA;
-}
 .address-wrapper {
   width: 6.9rem;
-  height: 1.54rem;
-  background: #fff;
   border-radius: 0.08rem;
   /* border: 1px solid #000; */
   box-shadow: 0 0.04rem 0.08rem #EFEFEF;
@@ -89,12 +67,18 @@ body {
   align-items: center;
   justify-content: space-between;
   text-decoration: none;
+  margin-bottom: 0.2rem;
+  background-color: #fff;
 }
 .location {
   width: 0.6rem;
   height: 0.6rem;
-  margin-right: 0.22rem;
-  margin-left:0.22rem;
+  margin:0 0.2rem;
+  background-color: #b7b8bf;
+  border-radius: 50%;
+  font-size: 0.3rem;
+  color: #fcfbff;
+  line-height: 0.6rem;
 }
 .right-arrow {
   width: 0.14rem;
@@ -106,26 +90,30 @@ body {
   font-size: 0.26rem;
   color: #323336;
   vertical-align: center;
-  background: #fef;
 }
 .address-detail {
   display: flex;
   justify-content: space-between;
-   align-items: center;
-   vertical-align: middle;
-    background: #ff0;
+  align-items: center;
+  vertical-align: middle;
+  padding-right: 0.2rem;
 }
 .address-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f0f;
+  flex: 1;
+  text-align: left;
 }
 .address-top {
-  line-height: 0.4rem;
+  height: 0.38rem;
+  text-align: left;
+  line-height: 0.38rem;
+  overflow: hidden;
+  font-size: 0.3rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.1rem;
 }
 .address-bottom {
   line-height: 0.4rem;
+  font-size: 0.26rem;
 }
 .hint {
   margin-top: 0.4rem;
@@ -156,6 +144,7 @@ body {
     margin-top: 0.8rem;
 }
 .ediuts {
+    width: 1rem;
     font-size: 0.32rem;
     color: #ccc;
 }
