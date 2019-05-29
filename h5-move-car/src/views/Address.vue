@@ -163,6 +163,9 @@ body {
    align-items: center;
    vertical-align: middle;
 }
+.address-content {
+  flex: 1;
+}
 .address-top {
   height: 0.38rem;
   text-align: left;
