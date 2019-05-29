@@ -1,26 +1,24 @@
 <template>
   <div class="container">
-      <!-- 有添加过地址的情况下 -->
+      
       <div class='address-wrapper'>
+        <!-- 有添加过地址的情况下 -->
           <router-link to="/AddressAll" class='address-empty'  v-if="address&&address.name">
-            <!-- <div class='address-full' @click='chooseAddress'> -->
                 <div class='address-detail'>
                     <img src='../assets/location.png' class='location' />
                     <div class='address-content'>
                         <div class='address-top'>
-                            <span style='margin-right:.1rem;font-size:0.3rem;font-weight: bold;color:#323336'>{{address.name}}</span>
-                            <span style="font-size:0.26rem;font-weight: bold;color:#9D9EA4">{{address.tel}}</span>
+                            <span style="font-weight: bolder;margin-right:0.2rem;color: #323336;">{{address.name}}</span>
+                            <span style="font-size:0.26rem">{{address.tel}}</span>
                         </div>
                         <div class='address-bottom'>
                             <div class='address-text'>{{address.value  + ' '+ address.detail}}</div>
-                        </div>      
-                    </div>        
+                        </div>
+                    </div>
                 </div>
-                <img src='../assets/right-arrow.png' class='right-arrow' /> 
-                
+                <img src='../assets/right-arrow.png' class='right-arrow' />
           </router-link>
-            <!-- </div> -->
-                  <!-- 没有添加过地址的情况下 -->
+           <!-- 没有添加过地址的情况下 -->
           <router-link to="/AddressDetail"  class='address-empty' v-else>
             <div class='address-empty-left'>
                 <img src='../assets/location.png' class='location' />
@@ -28,25 +26,18 @@
             </div>
             <img src='../assets/right-arrow.png' class='right-arrow' />
           </router-link>
-           <!-- <div style="border-bottom: 0.005rem solid #f2f2f2;width:auto;margin:0 .2rem"></div> -->
       </div>
-      
-      
-     
-
-      <!-- <div class="buton" v-if="!xj || xz">立即兑换</div> -->
+      <!-- 新疆西藏地区邮费问题 -->
       <div>
           <div v-if="xj||xz" class="hint">
             <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
             <div class="buttn">
-                <div>运费:  <span>￥15.00</span></div>
-                <div>立即支付</div>
+                <div style="background-color:#fff">运费:  <span>￥15.00</span></div>
+                <div @click="payment">立即支付</div>
             </div>
           </div>
-          
-          <div class="buton" v-else>立即兑换</div>
+          <div class="buton" v-else @click="conversion">立即兑换</div>
       </div>
-    <!-- <h3>这是address页面</h3> -->
 </div>
 </template>
 <script>
@@ -57,38 +48,35 @@ export default {
     },
     data() {
       return {
-        address: '',
+        address: '',  //所有用户地址信息
         addressList: [],
-        xj:null,
-        xz:null
+        xj:null,    //判断是否是新疆地区
+        xz:null     //判断是否是西藏地区
       }
     },
     mounted() {
-      
       let list = window.localStorage.getItem("addressList");
       console.log(list);
       //如果有本地缓存
       if(list && JSON.parse(list).length) {
         this.addressList = JSON.parse(list);
-      }else{
-        //没有本地缓存的时候存储为address：[]
-        window.localStorage.setItem("addressList","[]")
       }
       this.getAddress();
-    
     },
     methods:{
       getAddress: function() {
         // debugger;
         this.addressList.map(res => {
             this.address = res;
+
             console.log(";;;;"+res);
+
             if(res.value.indexOf("新疆维吾尔") != -1){
               this.xj = res.value;
             }else {
               this.xj = "";
             }
-            if(res.value.indexOf("西藏自治区")!= -1){
+            if(res.value.indexOf("西藏自治区") != -1){
               this.xz = res.value;
             }else {
               this.xz = "";
@@ -96,6 +84,15 @@ export default {
         })
 
       },
+      //点击立即支付
+      payment() {
+        console.log("立即支付")
+      },
+      //点击立即兑换
+      conversion() {
+        console.log("立即兑换")
+      }
+
     }
   }
 
@@ -107,14 +104,14 @@ body {
 }
 .address-wrapper {
   width: 6.9rem;
-  height: 1.54rem;
   background: #fff;
   border-radius: 0.08rem;
-  /* border: 1px solid #000; */
   box-shadow: 0 0.04rem 0.08rem #EFEFEF;
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
+  overflow: hidden;
+  text-align: left;
 }
 .right-arrow {
   width: 0.065rem;
@@ -135,7 +132,6 @@ body {
   color: #000;
 }
 .location {
-  width: 0.6rem;
   height: 0.6rem;
   margin-right: 0.22rem;
   margin-left:0.22rem;
@@ -160,42 +156,40 @@ body {
   font-size: 0.26rem;
   color: #323336;
   vertical-align: center;
-  background: #fef;
 }
 .address-detail {
   display: flex;
   justify-content: space-between;
-  /* line-height: 0.26rem; */
    align-items: center;
    vertical-align: middle;
-    background: #ff0;
-}
-.address-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f0f;
 }
 .address-top {
-  line-height: 0.4rem;
+  height: 0.38rem;
+  text-align: left;
+  line-height: 0.38rem;
+  overflow: hidden;
+  font-size: 0.3rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.1rem;
 }
 .address-bottom {
   line-height: 0.4rem;
+  font-size: 0.26rem;
+  padding-bottom: 0.2rem;
 }
 .hint {
   margin-top: 0.4rem;
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
-  margin-left: 0.3rem;
+  margin-left: 0.35rem;
 }
 .hint>div:first-child {
-  width: 0.95rem;
   height: 0.32rem;
-  background: #F02D1B;
-  padding: 0.1rem;
-  font-size: 0.16rem;
+  background: linear-gradient(148deg, #FF9067, #F56B38);
+  padding: 0.05rem;
+  font-size: 0.2rem;
   color: #fff;
+  border-radius: 0.08rem;
 }
 .hint span {
   font-size: 0.26rem;
@@ -212,6 +206,7 @@ body {
   justify-content: space-between;
   position: absolute;
   bottom: 0;
+  left: 0;
 }
 .buttn>div:first-child{
   width: 60%;

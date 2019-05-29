@@ -92,9 +92,9 @@ export default {
       }
       if (!this.address.detail) {
         Toast({
-           message: '请输入详细地址',
-            duration: 3000 
-          })
+          message: '请输入详细地址',
+          duration: 3000
+        })
         return;
       }
       let old = window.localStorage.getItem("addressList",json);
@@ -104,13 +104,12 @@ export default {
       } else {
         addressList = [];
       }
-      
       addressList.push(this.address);
       let json = JSON.stringify(addressList);
       window.localStorage.setItem("addressList", json);
       this.$router.push('/Address');
 
-      console.log("!!!"+addressList)
+      console.log("!!!",addressList)
     }
 
   }

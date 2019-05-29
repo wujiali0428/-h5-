@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import './config/resize.js'
 import Mint from 'mint-ui'
+import './config/css-reset.css'
 import 'mint-ui/lib/style.css'
 
 Vue.config.productionTip = false
