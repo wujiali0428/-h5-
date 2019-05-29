@@ -29,10 +29,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-<<<<<<< HEAD
-=======
-  /* overflow: hidden; */
->>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
   height: 100vh;
   background-color: #F8F8F8;
 }

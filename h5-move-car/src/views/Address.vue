@@ -70,7 +70,6 @@ export default {
       }
     },
     methods:{
-<<<<<<< HEAD
       getAddress: function(res) {
         this.address = res;
         if(res.value.indexOf("新疆维吾尔") != -1){
@@ -82,24 +81,6 @@ export default {
           this.xz = res.value;
         }else {
           this.xz = "";
-=======
-      getAddress: function() {
-        // debugger;
-        this.addressList.map(res => {
-            this.address = res;
-
-            console.log(";;;;"+res);
-
-            if(res.value.indexOf("新疆维吾尔") != -1){
-              this.xj = res.value;
-            }else {
-              this.xj = "";
-            }
-            if(res.value.indexOf("西藏自治区") != -1){
-              this.xz = res.value;
-            }else {
-              this.xz = "";
->>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
             }
 
       },
@@ -129,10 +110,6 @@ body {
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
-<<<<<<< HEAD
-=======
-  overflow: hidden;
->>>>>>> 318ea1310692213d5f9fcffd15ef17ecdaa98704
   text-align: left;
 }
 .right-arrow {
