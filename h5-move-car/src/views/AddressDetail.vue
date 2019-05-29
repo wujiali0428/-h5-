@@ -117,6 +117,9 @@ export default {
 </script>
 
 <style scoped>
+.address {
+    background: #fff;
+}
 .input{
   font-size: 0.5rem;
   display: flex;
@@ -132,6 +135,7 @@ export default {
 }
 
 input {
+  width: 3.5rem;
   outline: none;
   background: transparent;
   border: none;
@@ -160,14 +164,16 @@ input {
 }
 
 .button {
-  width: 100%;
+  width: 90%;
   height: 1.02rem;
   background: #F02D1B;
+  margin: 0 auto;
   font-size: 0.36rem;
   color: #fff;
   line-height: 1.02rem;
   border-radius: 0.08rem;
   margin-top: 1rem;
+  
 }
 </style>
 
