@@ -23,7 +23,6 @@
 <script>
 import vuePickers from 'vue-pickers'
 import {provs_data, citys_data, dists_data} from 'vue-pickers/lib/areaData'
-// import {createToast} from "mint-ui"
 import { Toast } from 'mint-ui';
 
 export default {
@@ -42,14 +41,20 @@ export default {
         data2: citys_data,
         data3: dists_data
       },
-      
       address: {
           name: '',
           tel: '',
           city:'',
           detail:'',
           value:'',
-      }
+      },
+      index:-1
+    }
+  },
+  created(){
+    if(this.$route.query.address){
+      this.address = this.$route.query.address
+      this.index = this.$route.query.index
     }
   },
   methods: {
@@ -77,7 +82,7 @@ export default {
         }
       let reg = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
       if (!reg.test(this.address.tel)) {
-         Toast({
+        Toast({
             message: '请输入正确手机号',
             duration: 3000
           })
@@ -104,12 +109,14 @@ export default {
       } else {
         addressList = [];
       }
-      addressList.push(this.address);
+      if(this.index != -1){
+        addressList[this.index] = this.address
+      }else{
+        addressList.push(this.address);
+      }
       let json = JSON.stringify(addressList);
       window.localStorage.setItem("addressList", json);
       this.$router.push('/Address');
-
-      console.log("!!!",addressList)
     }
 
   }
@@ -139,6 +146,8 @@ input {
   outline: none;
   background: transparent;
   border: none;
+  font-size: 0.3rem;
+  color: rgb(84, 84, 84);
 }
 
 ::placeholder {

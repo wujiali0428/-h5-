@@ -32,7 +32,7 @@
           <div v-if="xj||xz" class="hint">
             <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
             <div class="buttn">
-                <div style="background-color:#fff">运费:  <span>￥15.00</span></div>
+                <div style="background-color:#fff">运费:  <span style="color:#F02C1C;font-size:0.3rem">￥15.00</span></div>
                 <div @click="payment">立即支付</div>
             </div>
           </div>
@@ -55,33 +55,33 @@ export default {
       }
     },
     mounted() {
-      let list = window.localStorage.getItem("addressList");
-      console.log(list);
-      //如果有本地缓存
-      if(list && JSON.parse(list).length) {
-        this.addressList = JSON.parse(list);
+      if(this.$route.query.address){
+        this.getAddress(this.$route.query.address);
+      }else{
+        let list = window.localStorage.getItem("addressList");
+        console.log(list);
+        //如果有本地缓存
+        if(list && JSON.parse(list).length) {
+          this.addressList = JSON.parse(list);
+        }
+        this.addressList.map(res => {
+          this.getAddress(res);
+        })
       }
-      this.getAddress();
     },
     methods:{
-      getAddress: function() {
-        // debugger;
-        this.addressList.map(res => {
-            this.address = res;
-
-            console.log(";;;;"+res);
-
-            if(res.value.indexOf("新疆维吾尔") != -1){
-              this.xj = res.value;
-            }else {
-              this.xj = "";
+      getAddress: function(res) {
+        this.address = res;
+        if(res.value.indexOf("新疆维吾尔") != -1){
+          this.xj = res.value;
+        }else {
+          this.xj = "";
+        }
+        if(res.value.indexOf("西藏自治区") != -1){
+          this.xz = res.value;
+        }else {
+          this.xz = "";
             }
-            if(res.value.indexOf("西藏自治区") != -1){
-              this.xz = res.value;
-            }else {
-              this.xz = "";
-            }
-        })
 
       },
       //点击立即支付
@@ -110,7 +110,6 @@ body {
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
-  overflow: hidden;
   text-align: left;
 }
 .right-arrow {
@@ -197,11 +196,12 @@ body {
 .hint span {
   font-size: 0.26rem;
   margin-left: 0.3rem;
+  color: #9C9EA8;
 }
 .buttn {
   width: 100%;
-  height: 1.02rem;
-
+  height: 1.01rem;
+  border-top: 0.01rem solid #EAEAEA;
   font-size: 0.36rem;
   color: #fff;
   line-height: 1.02rem;
@@ -212,12 +212,12 @@ body {
   left: 0;
 }
 .buttn>div:first-child{
-  width: 60%;
+  width: 50%;
   color: #000;
   font-size: 0.32rem
 }
 .buttn>div:last-child{
-  width: 40%;
+  width: 50%;
   color: #fff;
   font-size: 0.32rem;
   background:  #F02D1B;
