@@ -69,6 +69,8 @@ export default {
           this.getAddress(res);
         })
       }
+             
+
     },
     methods:{
       getAddress: function(res) {

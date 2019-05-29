@@ -12,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: '马上挪车',
+      name: '码上挪车',
       component: Home
     },
     {

@@ -2,7 +2,7 @@
   <div class="container">
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
-                <div class='address-detail' @click='queryAddress({address,index})'>
+                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="deleteAddress({address,index})">
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ediuts" @click=queryEdiuts({address,index})>编辑</div>
+                <div class="ediuts" @click="queryEdiuts({address,index})">编辑</div>
           </div>
     </div>
     <!-- <router-link to="/AddressDetail"> -->
@@ -23,6 +23,8 @@
 </div>
 </template>
 <script>
+import { MessageBox,Toast } from 'mint-ui';
+// import { addListener } from 'cluster';
 export default {
     name: 'Address',
     props: {
@@ -32,7 +34,10 @@ export default {
       return {
         addressList: [],
         xj:null,
-        xz:null
+        xz:null,
+        timer: 0,
+        startTimer: "",
+        endTimer: ""
       }
     },
     mounted() {
@@ -57,6 +62,37 @@ export default {
       newAddress(){
         window.localStorage.setItem("newAddress","1");
         this.$router.push('/AddressDetail')
+      },
+      //长按删除
+      deleteAddress(data) {
+        // debugger;
+        console.log("!!!!haha"+this.addressList);
+        
+        this.startTime = +new Date()
+        this.timer = setTimeout(function () {
+            MessageBox.confirm('确定要删除吗?').then(action => {
+              let message = window.localStorage.getItem("addressList");
+              console.log("bbb"+message);
+              let addAdressList = JSON.parse(message);
+              console.log("cccc"+addAdressList);
+              let arr = addAdressList.filter((item,i) => {
+                return i != data.index;
+              })
+                let json = JSON.stringify(arr);
+                console.log(arr);
+                window.localStorage.setItem("addressList", json);
+                Toast({
+                  message: "删除成功！",
+                  duration: 3000
+                })
+            });
+            // debugger;
+           
+        }, 700)
+        //没有作用，想要刷新页面的数据
+        this.$router.push('/AddressAll');
+
+        // window.localStorage.removeItem(data.index);
       }
     }
   }
