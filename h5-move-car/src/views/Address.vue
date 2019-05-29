@@ -58,30 +58,33 @@ export default {
       }
     },
     mounted() {
-      let list = window.localStorage.getItem("addressList");
-      console.log(list);
-      //如果有本地缓存
-      if(list && JSON.parse(list).length) {
-        this.addressList = JSON.parse(list);
+      if(this.$route.query.address){
+        this.getAddress(this.$route.query.address);
+      }else{
+        let list = window.localStorage.getItem("addressList");
+        console.log(list);
+        //如果有本地缓存
+        if(list && JSON.parse(list).length) {
+          this.addressList = JSON.parse(list);
+        }
+        this.addressList.map(res => {
+          this.getAddress(res);
+        })
       }
-      this.getAddress();
     },
     methods:{
-      getAddress: function() {
-        // debugger;
-        this.addressList.map(res => {
-            this.address = res;
-            if(res.value.indexOf("新疆维吾尔") != -1){
-              this.xj = res.value;
-            }else {
-              this.xj = "";
+      getAddress: function(res) {
+        this.address = res;
+        if(res.value.indexOf("新疆维吾尔") != -1){
+          this.xj = res.value;
+        }else {
+          this.xj = "";
+        }
+        if(res.value.indexOf("西藏自治区") != -1){
+          this.xz = res.value;
+        }else {
+          this.xz = "";
             }
-            if(res.value.indexOf("西藏自治区") != -1){
-              this.xz = res.value;
-            }else {
-              this.xz = "";
-            }
-        })
 
       },
     }
@@ -95,7 +98,6 @@ body {
 }
 .address-wrapper {
   width: 6.9rem;
-  height: 1.54rem;
   background: #fff;
   border-radius: 0.08rem;
   /* border: 1px solid #000; */
@@ -103,7 +105,7 @@ body {
   margin: 0 auto;
   line-height: 1.3rem;
   margin-top: 0.3rem;
-  overflow: hidden;
+  text-align: left;
 }
 .right-arrow {
   width: 0.065rem;

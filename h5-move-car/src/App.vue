@@ -1,14 +1,25 @@
 <template>
   <div id="app">
     <div class="nav">
-      <div class="return"></div>
-      <h4>马上挪车</h4>
+      <div class="return" @click="returnClick"></div>
+      <h4>{{this.$route.name?this.$route.name:'马上挪车'}}</h4>
     </div>
     <router-view/>
   </div>
 </template>
 <script>
+  export default {
+    data(){
+      return{
 
+      }
+    },
+    methods:{
+      returnClick(){
+        window.history.back()
+      }
+    }
+  }
 </script>
 
 <style scoped>
@@ -18,7 +29,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  overflow: hidden;
   height: 100vh;
   background-color: #F8F8F8;
 }

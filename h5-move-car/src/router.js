@@ -12,18 +12,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: '马上挪车',
       component: Home
     },
     {
       path: '/AddressDetail',
-      name: 'addressDetail',
+      name: '添加收货地址',
       component: AddressDetail
     },
-    
     {
       path: '/Address',
-      name: 'Address',
+      name: '立即兑换',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -31,7 +30,7 @@ export default new Router({
     },
     {
       path: '/AddressAll',
-      name: 'AddressAll',
+      name: '选择收货地址',
       component: AddressAll
     }
   ]
