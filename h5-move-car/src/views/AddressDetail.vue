@@ -131,6 +131,8 @@ export default {
         let json = JSON.stringify(addressList);
         window.localStorage.setItem("addressList", json);
         // console.log(window.localStorage.getItem("addressList",json));
+        window.localStorage.setItem("queryAddress","")
+        window.localStorage.setItem("queryEdiuts","")
         this.$router.push('/AddressAll');
     }
   }
