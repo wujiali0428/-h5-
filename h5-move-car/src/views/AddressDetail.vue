@@ -125,13 +125,8 @@ export default {
         let old = window.localStorage.getItem("addressList",json);
         let addressList = JSON.parse(old);
         addressList.splice(this.index,1)
-        // let arr = addressList.filter((item,i) => {
-        //     return i != this.index;
-        // })
-        // console.log(arr);
         let json = JSON.stringify(addressList);
         window.localStorage.setItem("addressList", json);
-        // console.log(window.localStorage.getItem("addressList",json));
         window.localStorage.setItem("queryAddress","")
         window.localStorage.setItem("queryEdiuts","")
         this.$router.replace('/AddressAll');
