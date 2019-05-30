@@ -91,7 +91,6 @@ export default {
         }, 700)
         //没有作用，想要刷新页面的数据
         this.$router.push('/AddressAll');
-
         // window.localStorage.removeItem(data.index);
       }
     }
