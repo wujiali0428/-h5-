@@ -2,7 +2,7 @@
   <div class="container">
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
-                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="touchStart({address,index})" @touchend="touchEnd">
+                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="touchStart(event,{address,index})" @touchend="touchEnd(event)">
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -24,7 +24,6 @@
 </template>
 <script>
 import { MessageBox,Toast } from 'mint-ui';
-import { clearInterval } from 'timers';
 // import { addListener } from 'cluster';
 export default {
     name: 'Address',
@@ -66,7 +65,7 @@ export default {
       },
       //长按删除
       deleteAddress(data) {
-        MessageBox.confirm('确定要删除吗?').then(action => {
+        MessageBox.confirm('确定要删除吗?').then(() => {
           let arr = this.addressList.filter((item,i) => {
             return i != data.index;
           })
@@ -87,17 +86,19 @@ export default {
         }).catch(()=>{ });
         // debugger;
       },
-      touchStart(data){
+      touchStart(event,data){
         window.clearTime = window.setInterval(function(){
           this.startTimer += 1;
-          if(this.startTimer>=3){
+          if(this.startTimer>=2){
             this.deleteAddress(data)
-            window.clearInterval(clearTime);
+            window.clearInterval(window.clearTime);
           }
         }.bind(this),1000)
+        event.preventDefault();
       },
-      touchEnd(){
-        window.clearInterval(clearTime);
+      touchEnd(event){
+        window.clearInterval(window.clearTime);
+        event.preventDefault();
       }
     }
   }
@@ -105,6 +106,9 @@ export default {
 </script>
 <style scoped>
 /* 添加地址 */
+.container{
+  user-select: none;
+}
 .address-wrapper {
   width: 6.9rem;
   border-radius: 0.08rem;

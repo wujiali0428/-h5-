@@ -2,7 +2,7 @@
   <div id="app">
     <div class="nav">
       <div class="return" @click="returnClick"></div>
-      <h4>{{this.$route.name?this.$route.name:'马上挪车'}}</h4>
+      <h4>{{this.$route.name?this.$route.name:'码上挪车'}}</h4>
     </div>
     <router-view/>
   </div>
@@ -31,6 +31,7 @@
   color: #2c3e50;
   height: 100vh;
   background-color: #F8F8F8;
+  user-select: none;
 }
 .nav{
   height: 0.88rem;
