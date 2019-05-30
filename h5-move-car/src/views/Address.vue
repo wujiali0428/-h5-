@@ -41,6 +41,7 @@
 </div>
 </template>
 <script>
+import { Toast } from 'mint-ui';
 export default {
     name: 'Address',
     props: {
@@ -93,7 +94,15 @@ export default {
       },
       //点击立即兑换
       conversion() {
-        console.log("立即兑换")
+        // console.log("立即兑换")
+        if(this.address==="") {
+          // console.log("kong")
+          Toast({
+            message: '请输入收货地址',
+            duration: 3000
+          })
+          return;
+        }
       }
 
     }

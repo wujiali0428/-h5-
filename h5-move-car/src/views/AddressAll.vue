@@ -26,8 +26,6 @@
 </div>
 </template>
 <script>
-// import { MessageBox,Toast } from 'mint-ui';
-// import { addListener } from 'cluster';
 export default {
     name: 'Address',
     props: {
@@ -49,15 +47,6 @@ export default {
       if(list && JSON.parse(list).length) {
         this.addressList = JSON.parse(list);
       }
-      // console.log(this.$router)
-      // if(this.addressList.length>0){
-      //     let data = { address:this.addressList[0]}
-      //     window.localStorage.setItem("queryAddress",JSON.stringify(data))
-      // }else{
-      //     window.localStorage.setItem("queryAddress","")
-      //     window.localStorage.setItem("queryEdiuts","1")
-      // }
-      
     },
     methods:{
       queryEdiuts(data) {
@@ -188,7 +177,7 @@ export default {
     border-left: 1px solid #9D9EA4; 
     padding-left: 0.2rem;
 }
-.empty {
+/* .empty {
   font-size: 0.3rem;
   width: 100%;
   height: 80%;
@@ -198,5 +187,5 @@ export default {
 }
 .empty>div {
   padding: 65% 0;
-}
+} */
 </style>
