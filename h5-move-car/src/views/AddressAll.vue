@@ -73,7 +73,7 @@ export default {
       },
       newAddress(){
         window.localStorage.setItem("newAddress","1");
-        this.$router.push('/AddressDetail')
+        this.$router.replace('/AddressDetail')
       },
     }
   }

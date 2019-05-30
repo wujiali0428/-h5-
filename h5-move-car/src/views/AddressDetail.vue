@@ -117,7 +117,8 @@ export default {
       }
       let json = JSON.stringify(addressList);
       window.localStorage.setItem("addressList", json);
-      this.$router.push('/AddressAll');
+      this.$router.replace('/AddressAll');
+      this.$router.go(-1)
     },
     //点击删除
     deleteAddress() {
@@ -133,7 +134,8 @@ export default {
         // console.log(window.localStorage.getItem("addressList",json));
         window.localStorage.setItem("queryAddress","")
         window.localStorage.setItem("queryEdiuts","")
-        this.$router.push('/AddressAll');
+        this.$router.replace('/AddressAll');
+        this.$router.go(-1)
     }
   }
 }
