@@ -62,7 +62,7 @@ export default {
       },
       newAddress(){
         window.localStorage.setItem("newAddress","1");
-        this.$router.replace('/AddressDetail')
+        this.$router.push('/AddressDetail')
       },
     }
   }
