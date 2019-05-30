@@ -2,7 +2,7 @@
   <div class="container">
       <div class='address-wrapper'>
           <div class='address-empty' v-for="(address,index) in addressList" :key="index">
-                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="deleteAddress({address,index})">
+                <div class='address-detail' @click='queryAddress({address,index})' @touchstart="touchStart({address,index})" @touchend="touchEnd">
                     <div class='location'>{{address.name.substring(0,1)}}</div>
                     <div class='address-content'>
                         <div class='address-top'>
@@ -16,7 +16,10 @@
                 </div>
                 <div class="ediuts" @click="queryEdiuts({address,index})">编辑</div>
           </div>
-    </div>
+      </div>
+      <!-- <div class="empty" v-else>
+        <div>暂无地址</div>
+      </div> -->
     <!-- <router-link to="/AddressDetail"> -->
       <div class="addAdress" @click="newAddress">添加新地址</div>
     <!-- </router-link> -->
@@ -24,6 +27,7 @@
 </template>
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+// import { clearInterval } from 'timers';
 // import { addListener } from 'cluster';
 export default {
     name: 'Address',
@@ -36,8 +40,7 @@ export default {
         xj:null,
         xz:null,
         timer: 0,
-        startTimer: "",
-        endTimer: ""
+        startTimer: 0,
       }
     },
     mounted() {
@@ -56,6 +59,7 @@ export default {
         this.$router.push('/AddressDetail');
       },
       queryAddress(data){
+        console.log(data);
         window.localStorage.setItem("queryAddress",JSON.stringify(data));
         this.$router.push('/Address');
       },
@@ -65,33 +69,38 @@ export default {
       },
       //长按删除
       deleteAddress(data) {
+        MessageBox.confirm('确定要删除吗?').then(() => {
+          let arr = this.addressList.filter((item,i) => {
+            return i != data.index;
+          })
+          this.addressList = arr;
+          let json = JSON.stringify(arr);
+          window.localStorage.setItem("addressList", json);
+          Toast({
+            message: "删除成功！",
+            duration: 3000
+          })
+          if(this.addressList.length>0){
+            let data = { address:this.addressList[0]}
+            window.localStorage.setItem("queryAddress",JSON.stringify(data))
+          }else{
+            window.localStorage.setItem("queryAddress","")
+          }
+          this.$router.push('/AddressAll');
+        }).catch(()=>{ });
         // debugger;
-        console.log("!!!!haha"+this.addressList);
-        
-        this.startTime = +new Date()
-        this.timer = setTimeout(function () {
-            MessageBox.confirm('确定要删除吗?').then(action => {
-              let message = window.localStorage.getItem("addressList");
-              console.log("bbb"+message);
-              let addAdressList = JSON.parse(message);
-              console.log("cccc"+addAdressList);
-              let arr = addAdressList.filter((item,i) => {
-                return i != data.index;
-              })
-                let json = JSON.stringify(arr);
-                console.log(arr);
-                window.localStorage.setItem("addressList", json);
-                Toast({
-                  message: "删除成功！",
-                  duration: 3000
-                })
-            });
-            // debugger;
-           
-        }, 700)
-        //没有作用，想要刷新页面的数据
-        this.$router.push('/AddressAll');
-        // window.localStorage.removeItem(data.index);
+      },
+      touchStart(data){
+        window.clearTime = window.setInterval(function(){
+          this.startTimer += 1;
+          if(this.startTimer>=2){
+            this.deleteAddress(data)
+            window.clearInterval(window.clearTime);
+          }
+        }.bind(this),1000)
+      },
+      touchEnd(){
+        window.clearInterval(window.clearTime);
       }
     }
   }
@@ -115,6 +124,12 @@ export default {
   text-decoration: none;
   margin-bottom: 0.2rem;
   background-color: #fff;
+   -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+  -webkit-user-select:none; /*webkit浏览器*/
+  -khtml-user-select:none; /*早期浏览器*/
+  -moz-user-select:none;/*火狐*/
+  -ms-user-select:none; /*IE10*/
+  user-select:none;
 }
 .location {
   width: 0.6rem;
@@ -196,5 +211,16 @@ export default {
     line-height: 0.46rem;
     border-left: 1px solid #9D9EA4; 
     padding-left: 0.2rem;
+}
+.empty {
+  font-size: 0.3rem;
+  width: 100%;
+  height: 80%;
+  margin: 0 auto;
+  vertical-align: center;
+  background: #f0f;
+}
+.empty>div {
+  padding: 65% 0;
 }
 </style>

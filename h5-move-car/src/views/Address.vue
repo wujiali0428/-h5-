@@ -54,7 +54,7 @@ export default {
         xz:null     //判断是否是西藏地区
       }
     },
-    mounted() {
+    created() {
       if(window.localStorage.getItem("queryAddress")){
         let data = JSON.parse(window.localStorage.getItem("queryAddress"))
         this.getAddress(data.address);
