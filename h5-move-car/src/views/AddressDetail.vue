@@ -4,12 +4,8 @@
     <div class="input"><label>手机电话</label><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel"/></div>
     <div class="input" @click="toShow"><label for="adress">所在城市</label><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="address.value"></div>
     <div class="input"><label>详细地址</label><input type="text" placeholder="请输入详细地址" v-model="address.detail"/></div>
-
-    <!-- <div class="result">
-      <p>----选择结果----</p>
-      <p>{{res}}</p>
-    </div> -->
     <div class="button" @click="save">保存</div>
+    <div class="editus" v-if="editus" @click="deleteAddress">删除</div>
     <vue-pickers
       :show="show"
       :link="link"
@@ -48,14 +44,18 @@ export default {
           detail:'',
           value:'',
       },
+      editus:false,
       index:-1
     }
   },
   created(){
     if(window.localStorage.getItem("newAddress")==0){
+      this.editus = true;
       let data = JSON.parse(window.localStorage.getItem("queryEdiuts"))
       this.address = data.address
       this.index = data.index
+    }else {
+      this.editus = false;
     }
   },
   methods: {
@@ -117,9 +117,21 @@ export default {
       }
       let json = JSON.stringify(addressList);
       window.localStorage.setItem("addressList", json);
-      this.$router.push('/Address');
+      this.$router.push('/AddressAll');
+    },
+    //点击删除
+    deleteAddress() {
+        let old = window.localStorage.getItem("addressList",json);
+        let addressList = JSON.parse(old); 
+        let arr = addressList.filter((item,i) => {
+            return i != this.index;
+        })
+        console.log(arr);
+        let json = JSON.stringify(arr);
+        window.localStorage.setItem("addressList", json);
+        console.log(window.localStorage.getItem("addressList",json));
+        this.$router.push('/AddressAll');
     }
-
   }
 }
 </script>
@@ -184,6 +196,18 @@ input {
   border-radius: 0.08rem;
   margin-top: 1rem;
   
+}
+.editus{
+    width: 90%;
+  height: 1.02rem;
+  /* background: #F02D1B; */
+  border: 0.01rem solid #F02D1B;
+  margin: 0 auto;
+  font-size: 0.36rem;
+  color: #F02D1B;
+  line-height: 1.02rem;
+  border-radius: 0.08rem;
+  margin-top: 0.5rem;
 }
 </style>
 
