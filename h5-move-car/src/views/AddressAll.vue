@@ -49,14 +49,14 @@ export default {
       if(list && JSON.parse(list).length) {
         this.addressList = JSON.parse(list);
       }
-      console.log(this.$router)
-      if(this.addressList.length>0){
-          let data = { address:this.addressList[0]}
-          window.localStorage.setItem("queryAddress",JSON.stringify(data))
-      }else{
-          window.localStorage.setItem("queryAddress","")
-          window.localStorage.setItem("queryEdiuts","")
-      }
+      // console.log(this.$router)
+      // if(this.addressList.length>0){
+      //     let data = { address:this.addressList[0]}
+      //     window.localStorage.setItem("queryAddress",JSON.stringify(data))
+      // }else{
+      //     window.localStorage.setItem("queryAddress","")
+      //     window.localStorage.setItem("queryEdiuts","1")
+      // }
       
     },
     methods:{

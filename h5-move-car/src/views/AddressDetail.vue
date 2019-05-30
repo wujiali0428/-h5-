@@ -49,7 +49,7 @@ export default {
     }
   },
   created(){
-    if(window.localStorage.getItem("newAddress")==0){
+    if(window.localStorage.getItem("newAddress")==0 && window.localStorage.getItem("queryEdiuts")){
       this.editus = true;
       let data = JSON.parse(window.localStorage.getItem("queryEdiuts"))
       this.address = data.address
@@ -122,14 +122,15 @@ export default {
     //点击删除
     deleteAddress() {
         let old = window.localStorage.getItem("addressList",json);
-        let addressList = JSON.parse(old); 
-        let arr = addressList.filter((item,i) => {
-            return i != this.index;
-        })
-        console.log(arr);
-        let json = JSON.stringify(arr);
+        let addressList = JSON.parse(old);
+        addressList.splice(this.index,1)
+        // let arr = addressList.filter((item,i) => {
+        //     return i != this.index;
+        // })
+        // console.log(arr);
+        let json = JSON.stringify(addressList);
         window.localStorage.setItem("addressList", json);
-        console.log(window.localStorage.getItem("addressList",json));
+        // console.log(window.localStorage.getItem("addressList",json));
         this.$router.push('/AddressAll');
     }
   }
