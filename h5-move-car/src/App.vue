@@ -17,6 +17,7 @@
     methods:{
       returnClick(){
         window.history.back()
+        // this.$router.go(-1)
       }
     }
   }
@@ -38,7 +39,7 @@
   background-color: #fff;
   overflow: hidden;
   line-height: 0.88rem;
-  border-bottom: 0.01rem solid #EAEAEA; 
+  border-bottom: 0.01rem solid #EAEAEA;
 }
 .return{
   width: 0.88rem;

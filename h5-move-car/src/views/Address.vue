@@ -31,9 +31,14 @@
       <div>
           <div v-if="xj||xz" class="hint">
             <div>温馨提示</div><span>新疆、西藏地区邮费自理</span>
-            <div class="buttn">
+            <div class="buttn" v-if="aplay">
                 <div style="background-color:#fff">运费:  <span style="color:#F02C1C;font-size:0.3rem">￥15.00</span></div>
                 <div @click="payment">立即支付</div>
+            </div>
+            <div class="method" v-else>
+              <div class="method-title"><p style="flex:1;padding-left:0.3rem;">请选择支付方式</p><div @click="choosePay"><img src="./../assets/cancel.png" alt=""></div></div>
+              <div class="alipay" @click="alipay"><div style="width:0.8rem;"><img src="./../assets/alipay.png" alt=""></div><div><p>支付宝</p><p>数亿用户都在用，安全可托付</p></div></div>
+              <div class="wxpay"  @click="wxpay"><div style="width:0.8rem;"><img src="./../assets/wxpay.png" alt=""></div><div><p>微信支付</p></div></div>
             </div>
           </div>
           <div class="buton" v-else @click="conversion">立即兑换</div>
@@ -42,6 +47,7 @@
 </template>
 <script>
 import { Toast } from 'mint-ui';
+import axios from 'axios';
 export default {
     name: 'Address',
     props: {
@@ -52,7 +58,8 @@ export default {
         address: '',  //所有用户地址信息
         addressList: [],
         xj:null,    //判断是否是新疆地区
-        xz:null     //判断是否是西藏地区
+        xz:null,     //判断是否是西藏地区
+        aplay:true
       }
     },
     created() {
@@ -70,8 +77,6 @@ export default {
           this.getAddress(res);
         })
       }
-             
-
     },
     methods:{
       getAddress: function(res) {
@@ -88,9 +93,12 @@ export default {
             }
 
       },
+      choosePay(){
+        this.aplay = true;
+      },
       //点击立即支付
       payment() {
-        console.log("立即支付")
+        this.aplay = false
       },
       //点击立即兑换
       conversion() {
@@ -103,8 +111,17 @@ export default {
           })
           return;
         }
-      }
+      },
+      alipay(){
+        axios.post('https://www.baidu.com',{name:'baidu'}).then((res)=>{
+          console.log(res)
+        }).catch((res)=>{
+          console.log(res);
+        })
+      },
+      wxpay(){
 
+      }
     }
   }
 
@@ -171,8 +188,8 @@ body {
 .address-detail {
   display: flex;
   justify-content: space-between;
-   align-items: center;
-   vertical-align: middle;
+  align-items: center;
+  vertical-align: middle;
 }
 .address-content {
   flex: 1;
@@ -233,5 +250,69 @@ body {
   color: #fff;
   font-size: 0.32rem;
   background:  #F02D1B;
+}
+.method {
+  width: 100%;
+  /* height: 3.6rem; */
+  font-size: 0.3rem;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.method>div:first-child {
+  font-weight: bold;
+}
+.method>div {
+  height: 1.2rem;
+  text-align: center;
+  line-height: 1.2rem;
+  border-bottom: 0.01rem solid #f0f0f0;
+}
+
+.method-title{
+  display: flex;
+  padding: 0 0.3rem;
+}
+.method-title>div>img{
+  width: 0.3rem;
+  height: 0.3rem;
+}
+.alipay{
+  display: flex;
+  padding: 0.2rem 0.4rem;
+}
+.alipay>div>img{
+  width: 100%;
+  padding-top: 0.2rem;
+  /* vertical-align: middle; */
+}
+.alipay>div:last-child{
+  padding-top: 0.2rem;
+  padding-left: 0.3rem;
+  text-align: left;
+  line-height: 0.4rem;
+}
+.alipay>div:last-child>p:last-child{
+  font-size: 0.25rem;
+  color: #666;
+}
+
+.wxpay{
+  display: flex;
+  padding: 0.2rem 0.4rem;
+}
+.wxpay>div>img{
+  width: 100%;
+  padding-top: 0.2rem;
+  /* vertical-align: middle; */
+}
+.wxpay>div:last-child{
+  padding-left: 0.3rem;
+  text-align: left;
+  line-height: 0.4rem;
+}
+.wxpay>div:last-child>p{
+  line-height: 1.2rem;
 }
 </style>
