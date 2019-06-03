@@ -24,6 +24,8 @@
 
 <script>
   import { Toast } from 'mint-ui';
+  import axios from 'axios';
+
   export default {
     name: 'app',
     data() {
@@ -92,6 +94,12 @@
                     }
                 })
             }
+            let param = 'tel=' + this.userMobile
+            axios.post('https://cdev.mys4s.cn/v5/user/code',param).then((res)=>{
+              console.log("res",res);
+            }).catch((err)=>{
+              console.log('err',err)
+            })
         },
         mobileRels(){
             let reg = /^\d{1,11}$/
