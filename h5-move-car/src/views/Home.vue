@@ -24,7 +24,7 @@
 
 <script>
   import { Toast } from 'mint-ui';
-  // import axios from 'axios';
+  import axios from 'axios';
 
   export default {
     name: 'app',
@@ -34,15 +34,14 @@
         userMobile:"",
         mobileAuthCode:"",
         disabled:false,
-        theCountdown: "获取验证码"
+        theCountdown: "获取验证码",
+        
       }
     },
     methods:{
       conversion() {
           let reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/;
           if(!reg.test(this.text)){
-              // alert("请输入正确的兑换码!")
-              // return;
               Toast({
                 message: '请输入正确的兑换码!',
                 duration: 3000
@@ -63,7 +62,44 @@
               })
               return;
           }
-          this.$router.push('/Address');
+          axios({
+                  url:'/v5/user/login',
+                  method: 'post',
+                  data:"tel=" + this.userMobile + "&code=" + this.mobileAuthCode,
+                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+            }).then((res)=>{
+              let token = res.data.data.Token
+              window.localStorage.setItem("token",token)
+              console.log(token)
+              axios({
+                url:'/v5/nc/key/check',
+                method: 'post',
+                
+                data:'access_token=' + token + "&code_key=" + this.text,
+              }).then((res)=>{
+                console.log("res",res);
+                if(res.data.code==0){
+                  this.$router.push('/Address');
+                  window.localStorage.setItem("newConversion",this.text) //存兑换码
+                }else{
+                  Toast({
+                    message: res.data.message,
+                    duration: 3000
+                  })
+                }
+              }).catch((err)=>{
+                console.log("error",err)
+                Toast({
+                  message: '兑换码已失效！',
+                  duration: 3000
+                })
+              })
+            }).catch((res)=>{
+              Toast({
+                message: '登陆失败请重试!',
+                duration: 3000
+              })
+            })
       },
       getAuthCode(){
             let reg = /(^[1][1,2,3,4,5,6,7,8,9][0-9]{9}$)/
@@ -94,42 +130,42 @@
                     }
                 })
             }
-            // axios({
-            //       url:'http://cdev.mys4s.cn/v5/user/code',
-            //       method: 'post',
-            //       data:"tel=" + this.userMobile,
-            //       headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
-            // }).then((res)=>{
-            //   console.log("res",res);
-            // }).catch((err)=>{
-            //   console.log('err',err)
-            // })
+            axios({
+                  url:'/v5/user/code',
+                  method: 'post',
+                  data:"tel=" + this.userMobile,
+                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+            }).then((res)=>{
+              console.log("res",res);
+            }).catch((err)=>{
+              console.log('err',err)
+            })
 
-            var xmlhttp;
-          // if(window.XMLHttpRequest){
-            xmlhttp=new XMLHttpRequest();
-          // }else{
-            // xmlhttp=new ActiveXobject('Microsoft.XMLHTTP');
+          //   var xmlhttp;
+          // // if(window.XMLHttpRequest){
+          //   xmlhttp=new XMLHttpRequest();
+          // // }else{
+          //   // xmlhttp=new ActiveXobject('Microsoft.XMLHTTP');
+          // // }
+          // xmlhttp.open('post','/v5/user/code');  
+          // xmlhttp.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          // xmlhttp.onreadystatechange = function (res) {
+          //   if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          //     console.log(res)
+          //     Toast({
+          //             message: "发送成功",
+          //             duration: 3000
+          //         })
+
+          //   }else {
+          //       Toast({
+          //             message: "发送失败",
+          //             duration: 3000
+          //         })
+          //   }
           // }
-          xmlhttp.open('post','/v5/user/code');  
-          xmlhttp.setRequestHeader('content-type','application/x-www-form-urlencoded');
-          xmlhttp.onreadystatechange = function (res) {
-            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-              console.log(res)
-              Toast({
-                      message: "发送成功",
-                      duration: 3000
-                  })
-
-            }else {
-                Toast({
-                      message: "发送失败",
-                      duration: 3000
-                  })
-            }
-          }
-          var data = 'tel=' + this.userMobile;
-          xmlhttp.send(data)
+          // var data = 'tel=' + this.userMobile;
+          // xmlhttp.send(data)
         },
         mobileRels(){
             let reg = /^\d{1,11}$/

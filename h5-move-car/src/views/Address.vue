@@ -59,10 +59,16 @@ export default {
         addressList: [],
         xj:null,    //判断是否是新疆地区
         xz:null,     //判断是否是西藏地区
-        aplay:true
+        aplay:true,
+        token: '',
+        oldconversion:''
       }
     },
     created() {
+      if(window.localStorage.getItem('token')){
+        this.token = window.localStorage.getItem('token')
+      }
+      // console.log(this.token)
       if(window.localStorage.getItem("queryAddress")){
         let data = JSON.parse(window.localStorage.getItem("queryAddress"))
         this.getAddress(data.address);
@@ -102,25 +108,75 @@ export default {
       },
       //点击立即兑换
       conversion() {
-        // console.log("立即兑换")
         if(this.address==="") {
-          // console.log("kong")
           Toast({
             message: '请输入收货地址',
             duration: 3000
           })
           return;
         }
+        if(window.localStorage.getItem("oldConversion") == window.localStorage.getItem("newConversion")){
+          Toast({
+            message: '您已经兑换过了！',
+            duration: 3000
+          })
+          return;
+        }
+        if (this.address && this.address.tel) {
+          let data = {
+          access_token: this.token,
+          num: 1,
+          tel: this.address.tel,
+          name: this.address.name,
+          addr:this.address.value + " " +this.address.detail,
+          channel: 114  
+          }
+         axios.post('v5/nc/order/new',data).then((res)=>{
+            Toast({
+              message: '兑换成功',
+              duration: 4000
+            })
+            this.oldconversion = window.localStorage.getItem("newConversion")
+            window.localStorage.setItem("oldConversion",this.oldconversion)
+            console.log(res)
+            // localStorage.removeItem('token');
+
+          }).catch((res)=>{
+            if(code> 0){
+              Toast({
+                message: res.msg,
+                duration: 4000
+              })
+            }
+             
+          }) 
+        }
+      
       },
       alipay(){
-        axios.post('v5/nc/order/pay_by_key').then((res)=>{
-          console.log(res)
+        console.log(this.address);
+        axios({
+              url:'/v5/nc/order/new',    
+              method: 'post',
+              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=ali_pre&access_token=" + window.localStorage.getItem('token'),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+        }).then((res)=>{
+          console.log("ali",res)
         }).catch((res)=>{
-          console.log(res);
+          console.log('ali',res);
         })
       },
       wxpay(){
-
+        axios({
+              url:'/v5/nc/order/new',
+              method: 'post',
+              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=wechat_h5&access_token=" + window.localStorage.getItem('token'),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+        }).then((res)=>{
+          console.log("weixin",res)
+        }).catch((res)=>{
+          console.log("weixin",res);
+        })
       }
     }
   }
