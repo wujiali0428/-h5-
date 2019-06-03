@@ -24,7 +24,7 @@
 
 <script>
   import { Toast } from 'mint-ui';
-  import axios from 'axios';
+  // import axios from 'axios';
 
   export default {
     name: 'app',
@@ -94,16 +94,42 @@
                     }
                 })
             }
-            axios({
-                  url:'https://cdev.mys4s.cn/v5/user/code',
-                  method: 'post',
-                  data:{"tel":"16631513153"},
-                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
-            }).then((res)=>{
-              console.log("res",res);
-            }).catch((err)=>{
-              console.log('err',err)
-            })
+            // axios({
+            //       url:'http://cdev.mys4s.cn/v5/user/code',
+            //       method: 'post',
+            //       data:"tel=" + this.userMobile,
+            //       headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+            // }).then((res)=>{
+            //   console.log("res",res);
+            // }).catch((err)=>{
+            //   console.log('err',err)
+            // })
+
+            var xmlhttp;
+          // if(window.XMLHttpRequest){
+            xmlhttp=new XMLHttpRequest();
+          // }else{
+            // xmlhttp=new ActiveXobject('Microsoft.XMLHTTP');
+          // }
+          xmlhttp.open('post','/v5/user/code');  
+          xmlhttp.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          xmlhttp.onreadystatechange = function (res) {
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+              console.log(res)
+              Toast({
+                      message: "发送成功",
+                      duration: 3000
+                  })
+
+            }else {
+                Toast({
+                      message: "发送失败",
+                      duration: 3000
+                  })
+            }
+          }
+          var data = 'tel=' + this.userMobile;
+          xmlhttp.send(data)
         },
         mobileRels(){
             let reg = /^\d{1,11}$/

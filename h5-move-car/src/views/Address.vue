@@ -113,7 +113,7 @@ export default {
         }
       },
       alipay(){
-        axios.post('https://www.baidu.com',{name:'baidu'}).then((res)=>{
+        axios.post('v5/nc/order/pay_by_key').then((res)=>{
           console.log(res)
         }).catch((res)=>{
           console.log(res);
