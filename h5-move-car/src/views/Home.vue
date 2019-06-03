@@ -224,6 +224,7 @@
   padding: 0;
   /* padding-right: 0.2rem; */
   outline: none;
+  font-size: 0.32rem;
 }
 .mobileAuthCode>input{
   flex: 1;
