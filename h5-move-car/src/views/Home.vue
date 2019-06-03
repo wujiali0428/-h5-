@@ -2,10 +2,12 @@
   <div id="body">
     <div id="nav">
         <img src="./../assets/banner.png">
-         <div class="content">
-        <div><input type="text" placeholder="请输入兑换码" value="" v-model="text"/></div>
-        <button @click="conversion">立即兑换</button>
-    </div>
+        <div class="content">
+          <div><input type="text" placeholder="请输入兑换码" value="" v-model="text"/></div>
+          <div><input placeholder="请输入手机号码" v-model="userMobile" type="number" @change="mobileRels"/></div>
+          <div class="mobileAuthCode"><input placeholder="请输入验证码" v-model="mobileAuthCode" type="text"/><button @click="getAuthCode" :disabled="disabled">{{theCountdown}}</button></div>
+          <button @click="conversion">立即兑换</button>
+        </div>
     </div>
     <div class="explain">
         <h3>兑换说明</h3>
@@ -26,11 +28,12 @@
     name: 'app',
     data() {
       return {
-        text: ''
+        text: '',
+        userMobile:"",
+        mobileAuthCode:"",
+        disabled:false,
+        theCountdown: "获取验证码"
       }
-    },
-    mounted() {
-     
     },
     methods:{
       conversion() {
@@ -44,19 +47,90 @@
               })
               return;
           }
+          if(!this.userMobile){
+              Toast({
+                message: '请输入手机号!',
+                duration: 3000
+              })
+                return;
+          }
+          if(!this.mobileAuthCode){
+              Toast({
+                message: '请输入验证码!',
+                duration: 3000
+              })
+              return;
+          }
           this.$router.push('/Address');
-      }
+      },
+      getAuthCode(){
+            let reg = /(^[1][1,2,3,4,5,6,7,8,9][0-9]{9}$)/
+            if(this.userMobile=="") {
+              Toast({
+                message: '请输入手机号!',
+                duration: 3000
+              })
+              return;
+            }
+            if(reg.test(this.userMobile) !== true){
+                Toast({
+                message: '请输入正确的手机号!',
+                duration: 3000
+              })
+              return;
+            }else{
+                this.disabled = true;
+                this.countdown({
+                    second:60,
+                    millisec: 1000,
+                    onChange:(second)=>{
+                        this.theCountdown = second + "s";
+                    },
+                    onEnd:()=>{
+                        this.disabled = false;
+                        this.theCountdown = "重新获取"
+                    }
+                })
+            }
+        },
+        mobileRels(){
+            let reg = /^\d{1,11}$/
+            if(reg.test(this.userMobile) !== true){
+                this.$message.warning('手机号码格式有误');
+                return
+            }
+        },
+        countdown(options){
+          var second = options.second;
+          var millisec = options.millisec || 1000;
+          //定时器调用前调用
+          options.onBefore && options.onBefore(options);
+          var timer = setInterval(() => {
+              if(second<=0){
+                  //end
+                  clearInterval(timer);
+                  options.onEnd && options.onEnd();
+              }else{
+                  //onchange
+                  second--;
+                  options.onChange && options.onChange(second)
+              }
+          }, millisec);
+        }
     }
   }
 </script>
 <style scoped>
 #body{
   background: #4512C2;
+  padding-bottom: 0.5rem;
 }
 
 #nav {
   width: 100%;
+  height: 13.5rem;
   position: relative;
+  /* overflow: hidden; */
 }
 
 
@@ -72,7 +146,6 @@
   position: absolute;
   top: 7.64rem;
 }
-
 .content input {
   height: 1rem;
   width: 5.22rem;
@@ -80,9 +153,11 @@
   letter-spacing: 0.015rem;
   color: #000;
   padding-left: 0.28rem;
+  border: 0;
+  border-radius: 0.1rem;
 }
 
-.content button {
+.content>button {
   height: 1rem;
   width: 5.5rem;
   background: #F02D1B;
@@ -93,7 +168,30 @@
   margin-top: 0.4rem;
   font-size: 0.36rem;
 }
-
+.content>div{
+  margin-top: 0.3rem
+}
+.mobileAuthCode{
+  display: flex;
+  width: 5.5rem;
+  margin: 0 auto;
+  border-radius: 0.1rem;
+  overflow: hidden;
+}
+.mobileAuthCode>button{
+  width: 2.2rem;
+  background: #fff;
+  color: #ff6420;
+  border: 0;
+  padding: 0;
+  /* padding-right: 0.2rem; */
+  outline: none;
+}
+.mobileAuthCode>input{
+  flex: 1;
+  width: 0;
+  border-radius: 0rem;
+}
 /* 兑换说明 */
 .explain {
   width: 90%;
@@ -101,7 +199,7 @@
   background: #3204A2;
   border-radius: 12px;
   margin: 0 auto;
-  position: relative;
+  /* position: relative; */
   top: -1rem;
 }
 
