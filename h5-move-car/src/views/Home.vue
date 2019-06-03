@@ -94,10 +94,10 @@
                     }
                 })
             }
-            console.log(this.userMobile)
-            axios.post({
+            axios({
                   url:'https://cdev.mys4s.cn/v5/user/code',
-                  data:{tel:this.userMobile},
+                  method: 'post',
+                  data:{"tel":"16631513153"},
                   headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
             }).then((res)=>{
               console.log("res",res);
