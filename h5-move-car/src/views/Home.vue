@@ -70,7 +70,7 @@
             }).then((res)=>{
               let token = res.data.data.Token
               window.localStorage.setItem("token",token)
-              console.log(token)
+              // console.log(token)
               axios({
                 url:'/v5/nc/key/check',
                 method: 'post',
@@ -78,15 +78,23 @@
                 data:'access_token=' + token + "&code_key=" + this.text,
               }).then((res)=>{
                 console.log("res",res);
-                if(res.data.code==0){
+                if(res.data.code>0) {
+                  Toast({
+                    message: res.data.msg,
+                     duration: 3000
+                  })
+                  return;
+                }
+                // if(res.data.code==0){
+                  
                   this.$router.push('/Address');
                   window.localStorage.setItem("newConversion",this.text) //存兑换码
-                }else{
-                  Toast({
-                    message: res.data.message,
-                    duration: 3000
-                  })
-                }
+                // }else{
+                //   Toast({
+                //     message: res.data.message,
+                //     duration: 3000
+                //   })
+                // }
               }).catch((err)=>{
                 console.log("error",err)
                 Toast({
@@ -95,6 +103,7 @@
                 })
               })
             }).catch((res)=>{
+              console.log(res)
               Toast({
                 message: '登陆失败请重试!',
                 duration: 3000

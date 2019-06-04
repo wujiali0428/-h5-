@@ -132,22 +132,47 @@ export default {
           channel: 114  
           }
          axios.post('v5/nc/order/new',data).then((res)=>{
-            Toast({
-              message: '兑换成功',
-              duration: 4000
+           if(res.data.code>0) {
+             Toast({
+                 message: res.data.msg,
+                 duration: 3000
+               })
+               return
+            }
+            axios({
+              url:'/v5/nc/order/pay_by_key',    
+              method: 'post',
+              data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+            }).then((res)=>{
+               if(res.data.code===0) {
+               Toast({
+                 message: '兑换成功',
+                 duration: 3000
+               })
+                this.$router.push('/');
+
+                }else{
+                  Toast({
+                    message: res.data.msg,
+                    duration: 3000
+                  })
+                }
             })
+           
+           
             this.oldconversion = window.localStorage.getItem("newConversion")
             window.localStorage.setItem("oldConversion",this.oldconversion)
             console.log(res)
-            // localStorage.removeItem('token');
 
           }).catch((res)=>{
-            if(code> 0){
-              Toast({
-                message: res.msg,
-                duration: 4000
-              })
-            }
+            console.log(res);
+            // if(res.code> 0){
+            //   Toast({
+            //     message: res.msg,
+            //     duration: 3000
+            //   })
+            // }
              
           }) 
         }
@@ -158,13 +183,45 @@ export default {
         axios({
               url:'/v5/nc/order/new',    
               method: 'post',
-              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=ali_pre&access_token=" + window.localStorage.getItem('token'),
+              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=ali_h5&access_token=" + window.localStorage.getItem('token'),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
-          console.log("ali",res)
+          axios({
+              url:'/v5/nc/order/pay_by_key',    
+              method: 'post',
+              data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+          }).then((res)=>{
+             if(res.data.data.order_status === 0) {
+                console.log("要支付了")
+                axios({
+                  url: '/v5/nc/order/pay',
+                  method: 'post',
+                  data: "order_id="+res.data.data.order_id + "&access_token="+window.localStorage.getItem("token")+"&pay_method=ali_h5",
+                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+                }).then((res)=>{
+                  console.log(res)
+                  if(res.data.code>0) {
+                    Toast({
+                      message: res.data.msg,
+                      duration: 3000
+                    })
+                    return;
+                  }
+                  if (res.data && res.data.data.qr_code) {
+                    window.location.href=res.data.qr_code
+                  }
+                }).catch((err)=>{
+                  console.log(err)
+                })
+             }
+          }).catch((err)=>{
+            console.log(err);
+          })
         }).catch((res)=>{
           console.log('ali',res);
         })
+
       },
       wxpay(){
         axios({
@@ -173,7 +230,44 @@ export default {
               data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=wechat_h5&access_token=" + window.localStorage.getItem('token'),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
-          console.log("weixin",res)
+          if(res.data.code>0){
+            Toast({
+                message: res.data.msg,
+                duration: 3000
+            })
+            return;
+          }
+          axios({
+              url:'/v5/nc/order/pay_by_key',    
+              method: 'post',
+              data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+          }).then((res)=>{
+            if(res.data.data.order_status === 0) {
+                axios({
+                  url: '/v5/nc/order/pay',
+                  method: 'post',
+                  data: "order_id="+res.data.data.order_id + "&access_token="+window.localStorage.getItem("token")+"&pay_method=wechat_h5",
+                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+                }).then((res)=>{
+                  if(res.data.code>0) {
+                    Toast({
+                      message: res.data.msg,
+                      duration: 3000
+                    })
+                    return;
+                  }
+                  if (res.data && res.data.data.MwebUrl) {
+                    window.location.href=res.data.MwebUrl
+                  }
+                }).catch((err)=>{
+                  console.log(err)
+                })
+             }
+            
+          }).catch((err)=>{
+            console.log(err);
+          })
         }).catch((res)=>{
           console.log("weixin",res);
         })
