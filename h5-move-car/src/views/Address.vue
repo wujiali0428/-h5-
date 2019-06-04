@@ -65,6 +65,9 @@ export default {
       }
     },
     created() {
+      if(!window.localStorage.getItem("newConversion")){
+        this.$router.push('/');
+      }
       if(window.localStorage.getItem('token')){
         this.token = window.localStorage.getItem('token')
       }
@@ -82,6 +85,43 @@ export default {
         this.addressList.map(res => {
           this.getAddress(res);
         })
+      }
+    },
+    mounted(){
+      if(window.localStorage.getItem("order_id")){
+        Indicator.open("订单状态查询中");
+        let numberQuery = 0
+        window.timer = window.setInterval(()=>{
+          numberQuery++;
+          if(numberQuery>20){
+            window.clearInterval(window.timer);
+            Indicator.close();
+            Toast({
+              message: "查询失败",
+              duration: 3000
+            })
+            this.$router.push('/');
+          }
+          axios({
+              url:'/v5/nc/order/pay_status',
+              method: 'post',
+              data:"order_id=" + window.localStorage.getItem("order_id"),
+              headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+          }).then((res)=>{
+              if(res){
+                window.clearInterval(window.timer);
+                Indicator.close();
+                window.localStorage.removeItem("order_id");
+                Toast({
+                  message: "订单已完成",
+                  duration: 3000
+                })
+                this.$router.push('/');
+              }
+          }).catch(()=>{
+
+          })
+        },1000)
       }
     },
     methods:{
@@ -173,26 +213,32 @@ export default {
             //     duration: 3000
             //   })
             // }
-             
-          }) 
+          })
         }
-      
       },
       alipay(){
         console.log(this.address);
         axios({
-              url:'/v5/nc/order/new',    
+              url:'/v5/nc/order/new',
               method: 'post',
               data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=ali_h5&access_token=" + window.localStorage.getItem('token'),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
+          if(res.data.code>0){
+            Toast({
+                message: res.data.msg,
+                duration: 3000
+            })
+            return;
+          }
+          window.localStorage.setItem("order_id",res.data.data.Id);
           axios({
-              url:'/v5/nc/order/pay_by_key',    
+              url:'/v5/nc/order/pay_by_key',
               method: 'post',
               data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
-             if(res.data.data.order_status === 0) {
+            if(res.data.data.order_status === 0) {
                 console.log("要支付了")
                 Indicator.open({
                   // text: 'Loading...',
@@ -241,6 +287,7 @@ export default {
             })
             return;
           }
+          window.localStorage.setItem("order_id",res.data.data.Id);
           axios({
               url:'/v5/nc/order/pay_by_key',    
               method: 'post',
