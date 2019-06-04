@@ -305,7 +305,8 @@ export default {
                     return;
                   }
                   if (res.data && res.data.data.MwebUrl) {
-                    window.location.href=res.data.MwebUrl
+                    // window.location.href=res.data.MwebUrl
+                    console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{
                   console.log(err)
