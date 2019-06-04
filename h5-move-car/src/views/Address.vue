@@ -46,7 +46,7 @@
 </div>
 </template>
 <script>
-import { Toast } from 'mint-ui';
+import { Toast,Indicator} from 'mint-ui';
 import axios from 'axios';
 export default {
     name: 'Address',
@@ -194,6 +194,10 @@ export default {
           }).then((res)=>{
              if(res.data.data.order_status === 0) {
                 console.log("要支付了")
+                Indicator.open({
+                  // text: 'Loading...',
+                  spinnerType: 'fading-circle'
+                });
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
@@ -244,6 +248,10 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
             if(res.data.data.order_status === 0) {
+                Indicator.open({
+                  // text: 'Loading...',
+                  spinnerType: 'fading-circle'
+                });
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
@@ -258,8 +266,8 @@ export default {
                     return;
                   }
                   if (res.data && res.data.data.MwebUrl) {
-                    // window.location.href=res.data.MwebUrl
-                    console.log(res.data.data.MwebUrl)
+                    window.location.href=res.data.MwebUrl
+                    // console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{
                   console.log(err)

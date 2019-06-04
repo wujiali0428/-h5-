@@ -146,6 +146,19 @@
                   headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
             }).then((res)=>{
               console.log("res",res);
+              if(res.data.code>0) {
+                Toast({
+                      message: res.data.data,
+                      duration: 3000
+                  })
+                  return;
+              }else{
+                 Toast({
+                      message: "发送成功",
+                      duration: 3000
+                  })
+              }
+              
             }).catch((err)=>{
               console.log('err',err)
             })
@@ -291,6 +304,7 @@
   font-size: 0.3rem;
   color: #B89EF9;
   padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
 }
 
 .explain>div {
