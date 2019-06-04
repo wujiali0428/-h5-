@@ -46,7 +46,7 @@
 </div>
 </template>
 <script>
-import { Toast,Indicator} from 'mint-ui';
+import { Toast,Indicator } from 'mint-ui';
 import axios from 'axios';
 export default {
     name: 'Address',
@@ -89,6 +89,7 @@ export default {
     },
     mounted(){
       if(window.localStorage.getItem("order_id")){
+        console.log("chaxundingdan")
         Indicator.open("订单状态查询中");
         let numberQuery = 0
         window.timer = window.setInterval(()=>{
@@ -239,19 +240,19 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
             if(res.data.data.order_status === 0) {
-                console.log("要支付了")
                 Indicator.open({
                   // text: 'Loading...',
-                  spinnerType: 'fading-circle'
-                });
+                  spinnerType: 'fading-circle' 
+                })
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
                   data: "order_id="+res.data.data.order_id + "&access_token="+window.localStorage.getItem("token")+"&pay_method=ali_h5",
                   headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
                 }).then((res)=>{
-                  console.log(res)
+                  // console.log("aaaaaa",res)
                   if(res.data.code>0) {
+                    Indicator.close();
                     Toast({
                       message: res.data.msg,
                       duration: 3000
@@ -259,6 +260,7 @@ export default {
                     return;
                   }
                   if (res.data && res.data.data.qr_code) {
+                    Indicator.close();
                     window.location.href=res.data.qr_code
                   }
                 }).catch((err)=>{
@@ -295,10 +297,10 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
             if(res.data.data.order_status === 0) {
-                Indicator.open({
+               Indicator.open({
                   // text: 'Loading...',
                   spinnerType: 'fading-circle'
-                });
+                })
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
@@ -306,6 +308,7 @@ export default {
                   headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
                 }).then((res)=>{
                   if(res.data.code>0) {
+                    Indicator.close();
                     Toast({
                       message: res.data.msg,
                       duration: 3000
@@ -313,8 +316,9 @@ export default {
                     return;
                   }
                   if (res.data && res.data.data.MwebUrl) {
+                    Indicator.close();
                     window.location.href=res.data.MwebUrl
-                    // console.log(res.data.data.MwebUrl)
+                    console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{
                   console.log(err)

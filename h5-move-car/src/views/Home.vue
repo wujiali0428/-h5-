@@ -5,7 +5,8 @@
         <div class="content">
           <div><input type="text" placeholder="请输入兑换码" value="" v-model="text"/></div>
           <div><input placeholder="请输入手机号码" v-model="userMobile" type="number" @change="mobileRels"/></div>
-          <div class="mobileAuthCode"><input placeholder="请输入验证码" v-model="mobileAuthCode" type="text"/><button @click="getAuthCode" :disabled="disabled">{{theCountdown}}</button></div>
+          <div class="mobileAuthCode"><input placeholder="请输入验证码" v-model="mobileAuthCode" type="text"/><button @click="getAuthCode
+          " :disabled="disabled">{{theCountdown}}</button></div>
           <button @click="conversion">立即兑换</button>
         </div>
     </div>
@@ -78,13 +79,13 @@
                 data:'access_token=' + token + "&code_key=" + this.text,
               }).then((res)=>{
                 console.log("res",res);
-                if(res.data.code>0) {
-                  Toast({
-                    message: res.data.msg,
-                     duration: 3000
-                  })
-                  return;
-                }
+                // if(res.data.code>0) {
+                //   Toast({
+                //     message: res.data.msg,
+                //      duration: 3000
+                //   })
+                //   return;
+                // }
                 // if(res.data.code==0){
                   
                   this.$router.push('/Address');
