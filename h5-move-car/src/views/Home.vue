@@ -41,7 +41,7 @@
     },
     methods:{
       conversion() {
-          let reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/;
+          let reg=/^(?![0-9]+$)(?![A-Z]+$)[0-9A-Z]{12}$/;
           if(!reg.test(this.text)){
               Toast({
                 message: '请输入正确的兑换码!',
@@ -163,32 +163,6 @@
             }).catch((err)=>{
               console.log('err',err)
             })
-
-          //   var xmlhttp;
-          // // if(window.XMLHttpRequest){
-          //   xmlhttp=new XMLHttpRequest();
-          // // }else{
-          //   // xmlhttp=new ActiveXobject('Microsoft.XMLHTTP');
-          // // }
-          // xmlhttp.open('post','/v5/user/code');  
-          // xmlhttp.setRequestHeader('content-type','application/x-www-form-urlencoded');
-          // xmlhttp.onreadystatechange = function (res) {
-          //   if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          //     console.log(res)
-          //     Toast({
-          //             message: "发送成功",
-          //             duration: 3000
-          //         })
-
-          //   }else {
-          //       Toast({
-          //             message: "发送失败",
-          //             duration: 3000
-          //         })
-          //   }
-          // }
-          // var data = 'tel=' + this.userMobile;
-          // xmlhttp.send(data)
         },
         mobileRels(){
             let reg = /^\d{1,11}$/
@@ -271,12 +245,15 @@
 .mobileAuthCode{
   display: flex;
   width: 5.5rem;
+  height: 1rem;
   margin: 0 auto;
   border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
   overflow: hidden;
 }
 .mobileAuthCode>button{
   width: 2.2rem;
+  height: 100%;
   background: #fff;
   color: #ff6420;
   border: 0;
@@ -287,6 +264,7 @@
 }
 .mobileAuthCode>input{
   flex: 1;
+  height: 100%;
   width: 0;
   border-radius: 0rem;
 }

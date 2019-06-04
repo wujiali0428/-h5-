@@ -117,7 +117,7 @@ export default {
                   message: "订单已完成",
                   duration: 3000
                 })
-                this.$router.push('/');
+                this.$router.push('/Address');
               }
           }).catch(()=>{
 
@@ -172,7 +172,7 @@ export default {
           addr:this.address.value + " " +this.address.detail,
           channel: 114  
           }
-         axios.post('v5/nc/order/new',data).then((res)=>{
+         axios.post('/v5/nc/order/new',data).then((res)=>{
            if(res.data.code>0) {
              Toast({
                  message: res.data.msg,
@@ -355,7 +355,6 @@ body {
 .right-arrow {
   width: 0.065rem;
   height: 0.115rem;
-  margin-left: 0.16rem;
 }
 .address-empty {
   padding: 0.16rem 0.16rem;
@@ -369,6 +368,9 @@ body {
   align-items: center;
   font-size: 0.3rem;
   color: #000;
+}
+.address-empty-left>span {
+   flex: 1;
 }
 .location {
   height: 0.6rem;
