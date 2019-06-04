@@ -1,9 +1,9 @@
 <template>
   <div class="address">
-    <div class="input"><label>收货人</label><input type="text" placeholder="收货人姓名" v-model="address.name"/></div>
-    <div class="input"><label>联系电话</label><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel"/></div>
-    <div class="input" @click="toShow"><label for="adress">所在城市</label><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="address.value"></div>
-    <div class="input"><label>详细地址</label><input type="text" placeholder="请输入详细地址" v-model="address.detail"/></div>
+    <div class="input"><div>收货人</div><input type="text" placeholder="收货人姓名" v-model="address.name"/></div>
+    <div class="input"><div>联系电话</div><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel"/></div>
+    <div class="input" @click="toShow"><div>所在城市</div><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="address.value"></div>
+    <div class="input"><div>详细地址</div><input type="text" placeholder="请输入详细地址" v-model="address.detail"/></div>
     <div class="button" @click="save">保存</div>
     <div class="editus" v-if="editus" @click="deleteAddress">删除</div>
     <vue-pickers
@@ -145,15 +145,18 @@ export default {
     background: #fff;
 }
 .input{
-  font-size: 0.5rem;
+  font-size: 0.28rem;
   display: flex;
   padding : 0.29rem 0 0.29rem 0.3rem;
+  height: 0.6rem;
   border-bottom: 1px solid #EAEAEA;
 }
 
-.input>label{
+.input>div{
   margin-right: 0.3rem;
   width: 1.3rem;
+  height: 0.6rem;
+  line-height: 0.6rem;
   font-size: 0.28rem;
   text-align: left;
 }
@@ -165,18 +168,29 @@ input {
   border: none;
   font-size: 0.3rem;
   color: rgb(84, 84, 84);
+  -webkit-appearance:none;
+  outline:none;
+  background:none;
+  padding: 0;
+  margin: 0;
 }
 
 ::placeholder {
-   color: #CED1D7;
-   font-size: 0.3rem;
+  color: rgb(84, 84, 84);
+  font-size: 0.28rem;
+  padding: 0;
 }
 
 .index{
   flex: 1;
   border: 0px;
-  font-size: 0.3rem;
+  font-size: 0.28rem;
   background-color: transparent;
+}
+.index:disabled{  
+    color:rgb(84, 84, 84);
+    opacity: 1;
+    -webkit-text-fill-color: rgb(84, 84, 84);
 }
 
 .result{

@@ -101,7 +101,7 @@ export default {
               message: "查询失败",
               duration: 3000
             })
-            this.$router.push('/');
+            this.$router.push('/Address');
           }
           axios({
               url:'/v5/nc/order/pay_status',
@@ -117,7 +117,7 @@ export default {
                   message: "订单已完成",
                   duration: 3000
                 })
-                this.$router.push('/Address');
+                this.$router.push('/');
               }
           }).catch(()=>{
 
@@ -219,6 +219,7 @@ export default {
       },
       alipay(){
         console.log(this.address);
+        Indicator.open("请稍等...");
         axios({
               url:'/v5/nc/order/new',
               method: 'post',
@@ -226,6 +227,7 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
           if(res.data.code>0){
+            Indicator.close();
             Toast({
                 message: res.data.msg,
                 duration: 3000
@@ -240,10 +242,6 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
             if(res.data.data.order_status === 0) {
-                Indicator.open({
-                  // text: 'Loading...',
-                  spinnerType: 'fading-circle' 
-                })
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
@@ -253,6 +251,7 @@ export default {
                   // console.log("aaaaaa",res)
                   if(res.data.code>0) {
                     Indicator.close();
+                    window.localStorage.removeItem("order_id");
                     Toast({
                       message: res.data.msg,
                       duration: 3000
@@ -264,18 +263,36 @@ export default {
                     window.location.href=res.data.data.qr_code
                   }
                 }).catch((err)=>{
+                  Indicator.close();
+                  window.localStorage.removeItem("order_id");
+                  Toast({
+                    message:"支付失败请重试",
+                    duration: 3000
+                  })
                   console.log(err)
                 })
              }
           }).catch((err)=>{
+            Indicator.close();
+            window.localStorage.removeItem("order_id");
+            Toast({
+              message:"支付失败请重试",
+              duration: 3000
+            })
             console.log(err);
           })
         }).catch((res)=>{
+          Indicator.close();
+            Toast({
+              message:"支付失败请重试",
+              duration: 3000
+            })
           console.log('ali',res);
         })
 
       },
       wxpay(){
+        Indicator.open("请稍等...");
         axios({
               url:'/v5/nc/order/new',
               method: 'post',
@@ -283,6 +300,7 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
           if(res.data.code>0){
+            Indicator.close();
             Toast({
                 message: res.data.msg,
                 duration: 3000
@@ -297,10 +315,6 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
             if(res.data.data.order_status === 0) {
-               Indicator.open({
-                  // text: 'Loading...',
-                  spinnerType: 'fading-circle'
-                })
                 axios({
                   url: '/v5/nc/order/pay',
                   method: 'post',
@@ -308,6 +322,7 @@ export default {
                   headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
                 }).then((res)=>{
                   if(res.data.code>0) {
+                    window.localStorage.removeItem("order_id");
                     Indicator.close();
                     Toast({
                       message: res.data.msg,
@@ -322,14 +337,30 @@ export default {
                     console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{
+                  Indicator.close();
+                  window.localStorage.removeItem("order_id");
+                  Toast({
+                    message:"支付失败请重试",
+                    duration: 3000
+                  })
                   console.log(err)
                 })
              }
-            
           }).catch((err)=>{
+            Indicator.close();
+            window.localStorage.removeItem("order_id");
+            Toast({
+              message:"支付失败请重试",
+              duration: 3000
+            })
             console.log(err);
           })
         }).catch((res)=>{
+          Indicator.close();
+            Toast({
+              message:"支付失败请重试",
+              duration: 3000
+            })
           console.log("weixin",res);
         })
       }
@@ -365,6 +396,7 @@ body {
 }
 .address-empty-left {
   display: flex;
+  flex: 1;
   align-items: center;
   font-size: 0.3rem;
   color: #000;
