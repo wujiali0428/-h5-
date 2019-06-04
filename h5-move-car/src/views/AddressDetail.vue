@@ -49,6 +49,10 @@ export default {
     }
   },
   created(){
+    console.log(window.localStorage.getItem("newConversion"))
+    if(!window.localStorage.getItem("newConversion")){
+        this.$router.push('/');
+    }
     if(window.localStorage.getItem("newAddress")==0 && window.localStorage.getItem("queryEdiuts")){
       this.editus = true;
       let data = JSON.parse(window.localStorage.getItem("queryEdiuts"))

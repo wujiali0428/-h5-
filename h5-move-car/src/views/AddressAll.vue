@@ -40,6 +40,11 @@ export default {
         startTimer: 0,
       }
     },
+    created(){
+      if(!window.localStorage.getItem("newConversion")){
+        this.$router.push('/');
+      }
+    },
     mounted() {
       let list = window.localStorage.getItem("addressList");
       console.log(list);
