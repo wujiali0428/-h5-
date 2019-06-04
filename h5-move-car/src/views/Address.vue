@@ -261,7 +261,7 @@ export default {
                   }
                   if (res.data && res.data.data.qr_code) {
                     Indicator.close();
-                    window.location.href=res.data.qr_code
+                    window.location.href=res.data.data.qr_code
                   }
                 }).catch((err)=>{
                   console.log(err)
@@ -317,7 +317,8 @@ export default {
                   }
                   if (res.data && res.data.data.MwebUrl) {
                     Indicator.close();
-                    window.location.href=res.data.MwebUrl
+                    window.location.href=res.data.data.MwebUrl
+                    // window.open(res.data.MwebUrl)
                     console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{
