@@ -4,7 +4,7 @@
         <img src="./../assets/banner.png">
         <div class="content">
           <div><input type="text" placeholder="请输入兑换码" value="" v-model="text"/></div>
-          <div><input placeholder="请输入手机号码" v-model="userMobile" type="number" @change="mobileRels"/></div>
+          <div><input placeholder="请输入手机号码" v-model="userMobile" type="tel" @input="mobileRels" maxlength="11"/></div>
           <div class="mobileAuthCode"><input placeholder="请输入验证码" v-model="mobileAuthCode" type="text"/><button @click="getAuthCode
           " :disabled="disabled">{{theCountdown}}</button></div>
           <button @click="conversion">立即兑换</button>
@@ -38,6 +38,10 @@
         theCountdown: "获取验证码",
         
       }
+    },
+    mounted(){
+      // console.log()
+      document.getElementById('title').innerHTML = this.$route.name
     },
     methods:{
       conversion() {
@@ -111,7 +115,8 @@
               })
               return;
             }
-            if(!reg.test(this.userMobile)){
+            // console.log(reg.test(this.userMobile))
+            if(reg.test(this.userMobile) !== true){
                 Toast({
                 message: '请输入正确的手机号!',
                 duration: 3000
@@ -140,7 +145,7 @@
               console.log("res",res);
               if(res.data.code>0) {
                 Toast({
-                      message: res.data.data,
+                      message: "发送失败，请稍后重试",
                       duration: 3000
                   })
                   return;
@@ -158,7 +163,10 @@
         mobileRels(){
             let reg = /^\d{1,11}$/
             if(reg.test(this.userMobile) !== true){
-                this.$message.warning('手机号码格式有误');
+                Toast({
+                      message: "手机号码格式有误",
+                      duration: 3000
+                  })
                 return
             }
         },

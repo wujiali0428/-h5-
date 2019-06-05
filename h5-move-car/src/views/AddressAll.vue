@@ -46,6 +46,7 @@ export default {
       }
     },
     mounted() {
+      document.getElementById('title').innerHTML = this.$route.name
       let list = window.localStorage.getItem("addressList");
       console.log(list);
       //如果有本地缓存
