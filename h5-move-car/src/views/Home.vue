@@ -111,7 +111,7 @@
               })
               return;
             }
-            if(reg.test(this.userMobile) !== true){
+            if(!reg.test(this.userMobile)){
                 Toast({
                 message: '请输入正确的手机号!',
                 duration: 3000
