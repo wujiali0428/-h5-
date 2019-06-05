@@ -75,27 +75,18 @@
               axios({
                 url:'/v5/nc/key/check',
                 method: 'post',
-                
                 data:'access_token=' + token + "&code_key=" + this.text,
               }).then((res)=>{
                 console.log("res",res);
                 if(res.data.code>0) {
                   Toast({
                     message: res.data.msg,
-                     duration: 3000
+                    duration: 3000
                   })
                   return;
                 }
-                if(res.data.code==0){
-                  
-                  this.$router.push('/Address');
-                  window.localStorage.setItem("newConversion",this.text) //存兑换码
-                }else{
-                  Toast({
-                    message: res.data.message,
-                    duration: 3000
-                  })
-                }
+                this.$router.push('/Address');
+                window.localStorage.setItem("newConversion",this.text) //存兑换码
               }).catch((err)=>{
                 console.log("error",err)
                 Toast({
@@ -218,14 +209,18 @@
   top: 7.64rem;
 }
 .content input {
-  height: 1rem;
+  height: 0.6rem;
+  line-height: 0.6rem;
   width: 5.22rem;
   font-size: 0.34rem;
   letter-spacing: 0.015rem;
   color: #000;
-  padding-left: 0.28rem;
-  border: 0;
   border-radius: 0.1rem;
+  border: 0;
+  padding: 0;
+  outline: none;
+  padding: 0.2rem 0;
+  padding-left: 0.28rem;
 }
 
 .content>button {
@@ -264,9 +259,15 @@
 }
 .mobileAuthCode>input{
   flex: 1;
-  height: 100%;
+  height: 0.6rem;
+  line-height: 0.6rem;
   width: 0;
   border-radius: 0rem;
+  border: 0;
+  padding: 0;
+  outline: none;
+  padding: 0.2rem 0;
+  padding-left: 0.28rem;
 }
 /* 兑换说明 */
 .explain {

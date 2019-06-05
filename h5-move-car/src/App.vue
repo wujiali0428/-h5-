@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div class="nav">
-      <div class="return" @click="returnClick"></div>
-      <h4>{{this.$route.name?this.$route.name:'码上挪车'}}</h4>
-    </div>
+    <!-- <div class="nav"> -->
+      <!-- <div class="return" @click="returnClick"></div> -->
+      <!-- <h4>{{this.$route.name?this.$route.name:'码上挪车'}}</h4> -->
+    <!-- </div> -->
     <router-view/>
   </div>
 </template>
@@ -15,10 +15,10 @@
       }
     },
     methods:{
-      returnClick(){
-        window.history.back()
+      // returnClick(){
+        // window.history.back()
         // this.$router.go(-1)
-      }
+      // }
     }
   }
 </script>
@@ -52,6 +52,7 @@
 .nav>h4{
   padding-right: 0.88rem;
   font-size: 0.36rem;
+  text-align: center;
   /* color :#000; */
   font-weight: bold;
 }

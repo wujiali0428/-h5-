@@ -77,6 +77,7 @@ export default {
 /* 添加地址 */
 .container{
   user-select: none;
+  overflow: hidden;
 }
 .address-wrapper {
   width: 6.9rem;
@@ -84,7 +85,7 @@ export default {
   box-shadow: 0 0.04rem 0.08rem #EFEFEF;
   margin: 0 auto;
   line-height: 1.3rem;
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
 }
 .address-empty {
   padding: 0.16rem 0.16rem;
