@@ -87,6 +87,7 @@ export default {
       }
     },
     mounted(){
+      document.getElementById('title').innerHTML = this.$route.name
       if(window.localStorage.getItem("order_id")){
         console.log("chaxundingdan")
         Indicator.open("订单状态查询中");

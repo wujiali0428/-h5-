@@ -62,6 +62,9 @@ export default {
       this.editus = false;
     }
   },
+  mounted(){
+    document.getElementById('title').innerHTML = this.$route.name
+  },
   methods: {
     close() {
       this.show = false
