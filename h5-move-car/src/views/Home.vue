@@ -144,23 +144,31 @@
             }).then((res)=>{
               console.log("res",res);
               if(res.data.code>0) {
-                Toast({
+                  Toast({
                       message: "发送失败，请稍后重试",
                       duration: 3000
                   })
+                  this.disabled = false;
+                  this.theCountdown = "重新获取"
                   return;
               }else{
-                 Toast({
-                      message: "发送成功",
-                      duration: 3000
-                  })
+                Toast({
+                  message: "发送成功",
+                  duration: 3000
+                })
               }
-              
             }).catch((err)=>{
               console.log('err',err)
+              Toast({
+                message: "发送失败，请稍后重试",
+                duration: 3000
+              })
+              this.disabled = false;
+              this.theCountdown = "重新获取"
             })
         },
         mobileRels(){
+          if(this.userMobile.length>0){
             let reg = /^\d{1,11}$/
             if(reg.test(this.userMobile) !== true){
                 Toast({
@@ -169,6 +177,7 @@
                   })
                 return
             }
+          }
         },
         countdown(options){
           var second = options.second;
