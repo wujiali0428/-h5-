@@ -60,8 +60,7 @@ export default {
         xj:null,    //判断是否是新疆地区
         xz:null,     //判断是否是西藏地区
         aplay:true,
-        token: '',
-        oldconversion:''
+        token: ''
       }
     },
     created() {
@@ -109,7 +108,8 @@ export default {
               data:"order_id=" + window.localStorage.getItem("order_id"),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
-              if(res){
+              console.log(res);
+              if(res.data.data){
                 window.clearInterval(window.timer);
                 Indicator.close();
                 window.localStorage.removeItem("order_id");
@@ -117,7 +117,19 @@ export default {
                   message: "订单已完成",
                   duration: 3000
                 })
+                window.localStorage.removeItem("newConversion")
                 this.$router.push('/');
+              }else{
+                if(numberQuery>15){
+                  window.clearInterval(window.timer);
+                  Indicator.close();
+                  window.localStorage.removeItem("order_id");
+                  Toast({
+                    message: "订单未支付",
+                    duration: 3000
+                  })
+                  this.$router.push('/Address');
+                }
               }
           }).catch(()=>{
 
@@ -156,13 +168,6 @@ export default {
           })
           return;
         }
-        if(window.localStorage.getItem("oldConversion") == window.localStorage.getItem("newConversion")){
-          Toast({
-            message: '您已经兑换过了！',
-            duration: 3000
-          })
-          return;
-        }
         if (this.address && this.address.tel) {
           let data = {
           access_token: this.token,
@@ -170,42 +175,36 @@ export default {
           tel: this.address.tel,
           name: this.address.name,
           addr:this.address.value + " " +this.address.detail,
-          channel: 114  
+          channel: 114
           }
-         axios.post('/v5/nc/order/new',data).then((res)=>{
-           if(res.data.code>0) {
-             Toast({
-                 message: res.data.msg,
-                 duration: 3000
-               })
-               return
+        axios.post('/v5/nc/order/new',data).then((res)=>{
+          if(res.data.code>0) {
+              Toast({
+                  message: res.data.msg,
+                  duration: 3000
+                })
+                return
             }
             axios({
-              url:'/v5/nc/order/pay_by_key',    
+              url:'/v5/nc/order/pay_by_key',
               method: 'post',
               data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
             }).then((res)=>{
-               if(res.data.code===0) {
-               Toast({
-                 message: '兑换成功',
-                 duration: 3000
-               })
+              if(res.data.code===0) {
+                Toast({
+                  message: '兑换成功',
+                  duration: 3000
+                })
                 this.$router.push('/');
-
-                }else{
-                  Toast({
-                    message: res.data.msg,
-                    duration: 3000
-                  })
-                }
+                window.localStorage.removeItem("newConversion")
+              }else{
+                Toast({
+                  message: res.data.msg,
+                  duration: 3000
+                })
+              }
             })
-           
-           
-            this.oldconversion = window.localStorage.getItem("newConversion")
-            window.localStorage.setItem("oldConversion",this.oldconversion)
-            console.log(res)
-
           }).catch((res)=>{
             console.log(res);
             // if(res.code> 0){
@@ -260,7 +259,7 @@ export default {
                   }
                   if (res.data && res.data.data.qr_code) {
                     Indicator.close();
-                    window.location.href=res.data.data.qr_code
+                    // window.location.href=res.data.data.qr_code
                   }
                 }).catch((err)=>{
                   Indicator.close();
@@ -271,7 +270,7 @@ export default {
                   })
                   console.log(err)
                 })
-             }
+            }
           }).catch((err)=>{
             Indicator.close();
             window.localStorage.removeItem("order_id");
@@ -309,7 +308,7 @@ export default {
           }
           window.localStorage.setItem("order_id",res.data.data.Id);
           axios({
-              url:'/v5/nc/order/pay_by_key',    
+              url:'/v5/nc/order/pay_by_key',
               method: 'post',
               data:"order_id=" + res.data.data.Id + "&code_key=" + window.localStorage.getItem("newConversion") + "&access_token=" + window.localStorage.getItem("token"),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
@@ -345,7 +344,7 @@ export default {
                   })
                   console.log(err)
                 })
-             }
+            }
           }).catch((err)=>{
             Indicator.close();
             window.localStorage.removeItem("order_id");

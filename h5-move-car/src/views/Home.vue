@@ -75,27 +75,18 @@
               axios({
                 url:'/v5/nc/key/check',
                 method: 'post',
-                
                 data:'access_token=' + token + "&code_key=" + this.text,
               }).then((res)=>{
                 console.log("res",res);
-                // if(res.data.code>0) {
-                //   Toast({
-                //     message: res.data.msg,
-                //      duration: 3000
-                //   })
-                //   return;
-                // }
-                // if(res.data.code==0){
-                  
-                  this.$router.push('/Address');
-                  window.localStorage.setItem("newConversion",this.text) //存兑换码
-                // }else{
-                //   Toast({
-                //     message: res.data.message,
-                //     duration: 3000
-                //   })
-                // }
+                if(res.data.code>0) {
+                  Toast({
+                    message: res.data.msg,
+                    duration: 3000
+                  })
+                  return;
+                }
+                this.$router.push('/Address');
+                window.localStorage.setItem("newConversion",this.text) //存兑换码
               }).catch((err)=>{
                 console.log("error",err)
                 Toast({
