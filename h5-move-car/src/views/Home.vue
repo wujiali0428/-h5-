@@ -124,7 +124,15 @@
               return;
             }else{
                 this.disabled = true;
-                this.countdown({
+               
+            }
+            axios({
+                  url:'/v5/user/code',
+                  method: 'post',
+                  data:"tel=" + this.userMobile,
+                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
+            }).then((res)=>{
+               this.countdown({
                     second:60,
                     millisec: 1000,
                     onChange:(second)=>{
@@ -135,32 +143,35 @@
                         this.theCountdown = "重新获取"
                     }
                 })
-            }
-            axios({
-                  url:'/v5/user/code',
-                  method: 'post',
-                  data:"tel=" + this.userMobile,
-                  headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
-            }).then((res)=>{
               console.log("res",res);
               if(res.data.code>0) {
-                Toast({
+                  Toast({
                       message: "发送失败，请稍后重试",
                       duration: 3000
                   })
+                  this.disabled = false;
+                  this.theCountdown = "重新获取"
+                  window.clearInterval(window.clearTimerCode)//获取失败的时候不再倒计时
                   return;
               }else{
-                 Toast({
-                      message: "发送成功",
-                      duration: 3000
-                  })
+                Toast({
+                  message: "发送成功",
+                  duration: 3000
+                })
               }
-              
             }).catch((err)=>{
               console.log('err',err)
+              Toast({
+                message: "发送失败，请稍后重试",
+                duration: 3000
+              })
+              this.disabled = false;
+              this.theCountdown = "重新获取"
+              window.clearInterval(window.clearTimerCode) //获取失败的时候不再倒计时
             })
         },
         mobileRels(){
+          if(this.userMobile.length>0){
             let reg = /^\d{1,11}$/
             if(reg.test(this.userMobile) !== true){
                 Toast({
@@ -169,6 +180,7 @@
                   })
                 return
             }
+          }
         },
         countdown(options){
           var second = options.second;
@@ -186,6 +198,7 @@
                   options.onChange && options.onChange(second)
               }
           }, millisec);
+          window.clearTimerCode = timer;    //获取失败的时候不再倒计时
         }
     }
   }

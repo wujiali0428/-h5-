@@ -121,7 +121,7 @@ export default {
                 window.localStorage.removeItem("newConversion")
                 this.$router.push('/');
               }else{
-                if(numberQuery>7){
+                if(numberQuery>5){
                   window.clearInterval(window.timer);
                   Indicator.close();
                   window.localStorage.removeItem("order_id");
@@ -221,7 +221,7 @@ export default {
         axios({
               url:'/v5/nc/order/new',
               method: 'post',
-              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=ali_h5&access_token=" + window.localStorage.getItem('token'),
+              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=114&access_token=" + window.localStorage.getItem('token'),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
           if(res.data.code>0){
@@ -303,7 +303,7 @@ export default {
         axios({
               url:'/v5/nc/order/new',
               method: 'post',
-              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=wechat_h5&access_token=" + window.localStorage.getItem('token'),
+              data:"num=1&tel=" + this.address.tel + '&name=' + this.address.name + "&addr=" + this.address.value + this.address.detail + "&channel=114&access_token=" + window.localStorage.getItem('token'),
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
         }).then((res)=>{
           if(res.data.code>0){
@@ -322,7 +322,6 @@ export default {
               headers:{'Content-Type':'application/x-www-form-urlencoded',"cache-contral":'no-cache'}
           }).then((res)=>{
              if(res.data.code>0){
-              //  console.log("ddddddd")
                Toast({
                   message: res.data.msg,
                   duration: 3000
@@ -348,7 +347,6 @@ export default {
                   if (res.data && res.data.data.MwebUrl) {
                     Indicator.close();
                     window.location.href=res.data.data.MwebUrl
-                    // window.open(res.data.MwebUrl)
                     console.log(res.data.data.MwebUrl)
                   }
                 }).catch((err)=>{

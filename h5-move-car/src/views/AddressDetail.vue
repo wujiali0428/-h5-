@@ -1,7 +1,7 @@
 <template>
   <div class="address">
     <div class="input"><div>收货人</div><input type="text" placeholder="收货人姓名" v-model="address.name"/></div>
-    <div class="input"><div>联系电话</div><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel"/></div>
+    <div class="input"><div>联系电话</div><input type="tel" placeholder="配送员联系你的电话" v-model="address.tel" maxlength="11"/></div>
     <div class="input" @click="toShow"><div>所在城市</div><input type="text" id="adress" disabled class="index" placeholder="请选择你所在的城市" :value="address.value"></div>
     <div class="input"><div>详细地址</div><input type="text" placeholder="请输入详细地址" v-model="address.detail"/></div>
     <div class="button" @click="save">保存</div>
